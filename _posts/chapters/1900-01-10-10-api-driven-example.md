@@ -7,19 +7,19 @@ categories:
 - chapters
 ---
 
-# API Driven Example: Colr
+# APIドリブン例：Colr
 
-We're going to build a front-end for the [Colr JSON API][colr]. Our users can type in a color hex code (i.e. "#3B5998") and then see what tags Colr users have assigned to that color. If our user is feeling particularly adventurous, they can add a new tag!
+私達は [Colr JSON API][colr] のフロントエンドを構築します．ユーザーは 16 進コード ( 例: "#3B5998") で色を入力することができ，その色に Colr ユーザーがどういったタグを割り当てているか見ることができます．もし特筆すべき新しいものだと感じた場合，新しいタグを追加できます！
 
-Let's talk about high-level architecture. We need two controllers: one for search, and one for a color. These should be wrapped inside a `UINavigationController`, our top level controller. We're also going to need some models: `Color` and `Tag`. I'm going to be honest: our app won't be the next top post on Dribbble, but it will work.
+大まかな設計について話しましょう．私達には 2 つのコントローラが必要です: 一つは検索のため，もう一つは色のため．それらはトップレベルのコントローラである `UINavigationController` の内部にラップされるべきです．`Color` や `Tag` といった，いくつかのモデルもまた必要になるでしょう．正直に言うと，私達のアプリは Dribbble の次のトップ記事にはならないでしょうけれども，まあとにかく動きはするでしょう．
 
-## Setup
+## セットアップ
 
-`motion create Colr` to get our project set up, and add `require 'bubble-wrap'` to our `Rakefile`. We're going to do a proper setup and create some folders *inside* `./app`: make `./app/models/` and `./app/controllers`.
+`motion create Colr` でプロジェクトのセットアップをし，`require 'bubble-wrap'` を `Rakefile` に追加します．適切な設定を行ったら，`./app` *内部*に いくつかのフォルダ - `./app/models/` 及び `./app/controllers` を作成します．
 
-## Models
+## モデル
 
-First let's dig into our models. The Colr API returns its colors as JSON objects as the form:
+まずモデルを掘り下げてみましょう．Colr API は JSON オブジェクトの形式で自身の色を返します :
 
 ```
 {
@@ -34,9 +34,9 @@ First let's dig into our models. The Colr API returns its colors as JSON objects
 }
 ```
 
-So our `Color`s will need `timestamp`, `hex`, `id`, and `tags` properties. In particular, `tags` will represent a has-many relationship with our `Tag` objects.
+そこで，私達の `Color` には `timestamp`， `hex`， `id`，および `tags` のプロパティが必要になります．特に，`tags` は `Tag` オブジェクトの has-many 関係を表しています．
 
-Make a `./app/models/color.rb` and fill it in with our nice model template:
+`./app/models/color.rb` を作成して，モデルのテンプレートを書き込んでください :
 
 ```ruby
 class Color
@@ -56,7 +56,7 @@ class Color
   ...
 ```
 
-Pretty easy to do with the `PROPERTIES` trick. But we need to give some special treatment to the `tags` attribute, which forces it to be always an array of `Tag` objects:
+`PROPERTIES` のトリックを使うのはとても簡単です．でも `tags` 属性についてだけ，常に `Tag` の配列であることという特別な前提を強制することにします :
 
 ```ruby
   ...
@@ -81,9 +81,9 @@ Pretty easy to do with the `PROPERTIES` trick. But we need to give some special 
 end
 ```
 
-Our custom `#tags` getter guarantees that it will return an array if no value has been given. The `#tags=` setter ensures that every object in `tags` will be an actual `Tag` object. But wait...we haven't written the `Tag` class yet!
+`#tags` getter は `tags` にまだ値が与えられていない場合でも配列を返すことを保証します．`#tags=` setter は，引数で渡された `tags` に含まれる全てのオブジェクトが `Tag` オブジェクトであることを保証します．でも，待って……まだ `Tag` クラスを書いていませんでした！
 
-Create and open `./app/models/tag.rb`. As you can see from the above example, the tags returned from the API are of the form:
+`./app/models/tag.rb` を作成して開きましょう．上記の例からわかるように，API から返されたタグの形式は次のとおりです :
 
 ```
 {
@@ -93,7 +93,7 @@ Create and open `./app/models/tag.rb`. As you can see from the above example, th
 }
 ```
 
-So in our `Tag` class, let's create our nice API-friendly model. No special overrides for this one, it can work as-is:
+そこで，素晴しい API に馴染むようなモデルとなるように `Tag` クラスを作りましょう．特別なオーバーライドはありません．この状態で十分動作します :
 
 ```ruby
 class Tag
@@ -112,9 +112,9 @@ class Tag
 end
 ```
 
-## Controllers
+## コントローラー
 
-Now that we have our models, time to start our controllers. Make `./app/controllers/search_controller.rb` and `./app/controllers/color_controller.rb`. We should give them a bare-bones implementation for now:
+今，私たちにはモデルがありますので，コントローラーを作り始めましょう．`./app/controllers/search_controller.rb` と `./app/controllers/color_controller.rb` を作ってください．さしあたって今は最低限の実装をすることにします :
 
 ```ruby
 class SearchController < UIViewController
@@ -136,7 +136,7 @@ class ColorController < UIViewController
 end
 ```
 
-And in our `AppDelegate`, throw a `UIWindow` and `UINavigationController` on the screen:
+そして `UIWindow` と `UINavigationController` を `AppDelegate` を使って画面上に表示します :
 
 ```ruby
 class AppDelegate
@@ -153,17 +153,17 @@ class AppDelegate
 end
 ```
 
-We've seen this stuff before, but maybe not all at once. `rake` and check out our spartan app:
+私たちは以前にもこのようなものを見たことがあり，一度だけではないかもしれません．`rake` して質素なアプリを見てみましょう :
 
 ![search title in app](images/0.png)
 
-Good start! Time to fill in our `SearchController`.
+好調な出足ですね！`SearchController` を作り込んでいきましょう．
 
 ## SearchController
 
-We're going to add a new type of control we haven't used, `UITextField`, to retrieve the hex code from the user. When the user pushes a "Search" button, we'll run the appropriate API request and lock the UI until it finishes. If we found a result, we'll push a new `ColorController`; else, we'll show a sad alert. Sound gravy?
+ユーザーから入力された 16 進数を検索するのに，`UITextField` という，今まで私たちが使ってこなかった新しいタイプの制御を使いましょう．ユーザが " 検索 " ボタンを押すと，適切な API リクエストを実行し，それが終了するまで UI をロックします．もし結果を見つけた場合，`ColorController` をプッシュします．そうではない場合，残念ながらアラートを表示します．よさそうな動きじゃないですか？
 
-We can setup our views in `SearchController` using something like this:
+以下のようにして，ビューを `SearchController` の中にセットアップすることができます :
 
 ```ruby
   def viewDidLoad
@@ -190,13 +190,13 @@ We can setup our views in `SearchController` using something like this:
   end
 ```
 
-A lot of the specific positioning (`self.view.frame.size.height / 2 - 100`) are based on my personal guess and check, there's no special magic going on (unfortunately). Some new bits are `UIControlStateDisabled`, which corresponds to what the button looks like if we do `@search.enabled = false`, and `UITextBorderStyleRoundedRect`, which is a nice-looking style of `UITextField`s.
+沢山ある具体的なポジション設定 (`self.view.frame.size.height / 2 - 100` など ) は，私が勘で決めて動作確認しただけで，魔法のようなことは何もしていません（残念です）．初めてみる設定がいくつかあります．`UIControlStateDisabled` は，もしボタンが `@search.enabled = false` の場合にどのように見えるかを示しており，`UITextBorderStyleRoundedRect` とは，`UITextField` の見栄えよいスタイルのことです．
 
-`rake` now and get a feel for our interface:
+`rake` してインターフェースがどうなっているか確かめましょう :
 
 ![search controller in app](images/1.png)
 
-Time to hook it up to some events. Remember when I said `BubbleWrap` comes with some nifty wrappers? Well, it has one to replace the clumsy `addTarget:action:forControlEvents` syntax we used earlier. Check out how idiomatic Ruby can make our code much cleaner:
+さてそろそろ幾つかのイベントにフックを仕掛けましょうか．私が `BubbleWrap` にはいくつか気の利いたラッパーがあると言ったのを覚えていますか？実のところ，`addTarget:action:forControlEvents` という扱いにくいシンタックスを置き換えるために，既に一度使っていますね．Ruby 風に書くことで，コードがどれだけ明確になるかみてみましょう :
 
 ```ruby
   def viewDidLoad
@@ -220,11 +220,11 @@ Time to hook it up to some events. Remember when I said `BubbleWrap` comes with 
   end
 ```
 
-The `when` function is available to every `UIControl` subclass (of which `UIButton` is one) and takes the usual bitmask of `UIControlEvent`s as its arguments. While the request runs, we temporarily disable our UI elements.
+`when` 関数は，全ての `UIControl` サブクラス (`UIButton` もその一つです ) で利用可能であり，`UIControlEvent` のビットマスクを引数として取ります．リクエストの実行中，私たちは一時的に UI 要素を無効にします．
 
-But wait...what's that `Color.find` method? Well, it's a good idea to keep all of your URL requests inside of models instead of controllers. That way if we want to get a `Color` from the server somewhere else in the app then there's no code duplication. Who knows, maybe we'll need that too...*foreshadowing*
+あれ……`Color.find` メソッドとは何でしょうか？ええと，URL リクエストはコントローラではなくモデルの中で扱う方がおすすめです．その方が，アプリの他の部分から，サーバーにある `Color` を取得しようとした時に，コードの重複がなくなります．*……この言葉が伏線となっていたことを，このとき私たちは知る由もなかった*．
 
-So in your `Color` class, add the `find` static method:
+ともかく，`Color` クラスに静的メソッド `find` を追加しましょう :
 
 ```ruby
 class Color
@@ -240,17 +240,17 @@ class Color
 end
 ```
 
-Look bad? We use the basic `HTTP.get` to get some data from the server via the proper API URL. Note that we use the `&block` notation to make it plain that this function is intended to be used with a block. This block isn't explicitly passed as another argument, but rather is implicitly passed when we put a `do/end` after we call the method. The number and order of variables in `.call(some, variables)` corresponds to `do |some, variables|`.
+変に見えますか？基本的な `HTTP.get` を使って，API URL 経由でサーバーからデータを取得します．`&block` 表記を使うことで，この関数がブロックと一緒に使われることを明確に表すようにしています．このブロックは別の引数として明示的に渡されるわけではなく，メソッドの後に `do/end` を書くことで暗黙的に渡されます．`.call(some, variables)` の変数の数と順序は `do |some, variables|` に対応しています．
 
-Anyway, `rake` and give it a go with a color like "3B5998". You should see something like this output in the console:
+とにかく，`rake` して "3B5998" のような色を渡してみましょう．コンソールでは，このような出力が表示されるはずです :
 
 ```
 (main)> "{\"colors\": [{\"timestamp\": 1285886579, \"hex\": \"ff00ff\", \"id\": 3976, \"tags\": [{\"timestamp\": 1108110851, \"id\": 2583, \"name\": \"fuchsia\"}, {\"timestamp\": 1108110864, \"id\": 3810, \"name\": \"magenta\"}, {\"timestamp\": 1108110870, \"id\": 4166, \"name\": \"magic\"}, {\"timestamp\": 1108110851, \"id\": 2626, \"name\": \"pink\"}, {\"timestamp\": 1240447803, \"id\": 24479, \"name\": \"rgba8b24ff00ff\"}, {\"timestamp\": 1108110864, \"id\": 3810, \"name\": \"magenta\"}]}], \"schemes\": [], \"schemes_history\": {}, \"success\": true, \"colors_history\": {\"ff00ff\": [{\"d_count\": 0, \"id\": \"4166\", \"a_count\": 1, \"name\": \"magic\"}, {\"d_count\": 0, \"id\": \"2626\", \"a_count\": 1, \"name\": \"pink\"}, {\"d_count\": 0, \"id\": \"24479\", \"a_count\": 1, \"name\": \"rgba8b24ff00ff\"}, {\"d_count\": 0, \"id\": \"3810\", \"a_count\": 1, \"name\": \"magenta\"}]}, \"messages\": [], \"new_color\": \"ff00ff\"}\n"
 ```
 
-Hey...that looks an awful lot like JSON, doesn't it? (if you didn't notice the "/json/" in the URL). Wouldn't it be great if we could parse that into a normal Ruby hash?
+こいつは……すごく…… JSON 風です．そうじゃないですか？( もしあなたが URL に /json/ が含まれていることに気付かなかったなら，JSON 「風」であると思ってくれるはず )．解析して普通の Ruby ハッシュにできたなら素晴しいですよね？
 
-BubbleWrap to the rescue again! Our nifty friend also has a `BW::JSON.parse` method which does exactly what it sounds like. Let's update `Color.find` to use it:
+BubbleWrap が再び助けてくれます！私たちの気の利く友人は `BW::JSON.parse` という，名は体を表すようなメソッドを持っています．それを使って `Color.find` を更新しましょう :
 
 ```ruby
 def self.find(hex, &block)
@@ -269,7 +269,7 @@ def self.find(hex, &block)
 end
 ```
 
-And in our `SearchController`, our callback can adapt appropriately if we got an invalid color:
+そして `SearchController` の中で，無効な色を取得した場合にコールバックが適切な扱いをできるようにします :
 
 ```ruby
   def viewDidLoad
@@ -294,11 +294,11 @@ And in our `SearchController`, our callback can adapt appropriately if we got an
   end
 ```
 
-This seems pretty reasonable. We parse the JSON, check for the non-existent/-1 id, and alter the UI accordingly:
+よさそうですね．JSON をパースして，存在しない/-1 の id を確認して，それに応じて UI を変更します :
 
 ![search controller in app](images/2.png)
 
-Great! Let's fix that `open_color` method to work. It should push a `ColorController` with the proper color, so we should probably fill in that implementation now.
+素晴らしい！`open_color` メソッドが動くように修正してみましょう．それは `ColorController` へ適切な色と共に push するべきで，今はこんな実装で埋めておきましょうか．
 
 ```ruby
 def open_color(color)
@@ -308,9 +308,9 @@ end
 
 ## ColorController
 
-We're going to use a custom initializer for `ColorController`; these custom initializers should always call the designated initializer of their superclass first (in this case, `initWithNibName:bundle:`). The controller's view will have two parts: a `UITableView` to display the color's tags, and a section to display the color and add new tags. When we want to add a new tag, a POST request is sent and our data is refreshed accordingly.
+`ColorController` のためにカスタムしたイニシャライザを使うようにしましょう．これらのカスタムイニシャライザは，常に最初にスーパークラスのイニシャライザ ( この場合は `initWithNibName:bundle:`) を呼ぶように設計されています．コントローラのビューには，二つの部分があります : 色のタグを表示するための `UITableView`，そして色の表示と新しいタグを追加する部分．新しいタグを追加したい場合，POSTリクエストが送信され，それに応じてデータが更新されます．
 
-That sounds like a lot, so let's take it one step at a time. First, our custom initializer:
+たくさんのことをしているように見えますね．一つずつ進めていきましょう．最初に，カスタムしたイニシャライザについてです :
 
 ```ruby
 class ColorController < UIViewController
@@ -325,9 +325,9 @@ class ColorController < UIViewController
   ...
 ```
 
-When overriding an iOS SDK initializer, you need to do two things: call the designated initializer and return `self` at the end. Beware: you can't use the usual Ruby `initialize` function!
+iOS の SDK のイニシャライザをオーバーライドする場合は，次の 2 つのことを行う必要があります : あらかじめデザインされたイニシャライザを呼び出し，最後に `self` を返す．いつもの Ruby の `initialize` 関数は使用できません．ご注意あれ！
 
-Next, let's layout our interface:
+次にインターフェースを並べてみましょう :
 
 ```ruby
   def viewDidLoad
@@ -378,15 +378,18 @@ Next, let's layout our interface:
   end
 ```
 
-WHEW WELL THAT IS A TON OF CODE NOW ISN'T IT. But again, we've built up to this point so we've seen it all, don't be intimidated. We just added a bunch of subviews and hooked them up to the appropriate data.
+＿人人人人人人人人＿
+＞　大量のコード　＜
+￣Y^Y^Y^Y^Y^Y^Y￣
+でも，恐れないでください．よくみると，全てここまでにやってきたことで構築しています．ただサブビューをまとめたものを追加して，適切なデータに繋いだだけです．
 
-`rake` and see for yourself:
+`rake` して確かめてみましょう :
 
 ![color controller in app](images/3.png)
 
-Hey, I told you it wouldn't win any design awards.
+そういえば，デザインでは賞を期待できないこと，すでにお伝えしてましたよね．
 
-Time to hook up the tags. We're going to use our handy table view `delegate` methods to populate the table with the tags. It'll be just a normal list, no fancy sections or callbacks:
+タグを繋げていきましょう．タグをテーブルに格納するのに便利なテーブルビューの `delegate` メソッドを使うつもりです．それだけで，風変りな部分やコールバックのない，普通のリストになります :
 
 ```ruby
   def viewDidLoad
@@ -412,13 +415,13 @@ Time to hook up the tags. We're going to use our handy table view `delegate` met
   end
 ```
 
-Another`rake` and hey! Some interesting data!
+また `rake` してみると……おおっ！目を引くデータがそこに！
 
 ![color tags in app](images/4.png)
 
-And now one more thing: adding new tags. There are a couple of ways to organize this new feature, like `Tag.create(tag)` or magically hack into `color.tags << tag`, but we're going to go with `color.add_tag(tag, &block)`. Why? Because it shows that tags and colors are tightly coupled.
+もう一つやりましょう : 新しいタグを追加できるようにします．その新機能を実装するには 2 つの方法があります，1 つは `Tag.create(tag)` のようにするか `color.tags << tag` をハックする方法，しかし今回はもう 1 つの `color.add_tag(tag, &block)` の方法でやっていきます．なぜでしょう？なぜなら，その方が色とタグが密結合であることをよく示しているからです．
 
-Here's what that `add_tag` method looks like:
+`add_tag` メソッドは次のようになります :
 
 ```ruby
   def add_tag(tag, &block)
@@ -428,9 +431,9 @@ Here's what that `add_tag` method looks like:
   end
 ```
 
-Here we don't pass any extra arguments to `block.call`. We could pass some designation of success or failure, but we don't have to be super fault tolerant for this example.
+ここでは `block.call` へ何も引数を渡していません．成功か失敗といった情報を渡すこともできますが，この例では別にフォールトトレラントでなくともかまわないので，このようにしました．
 
-Now we place the `add_tag` code inside our button callback in `ColorController`. After the tag is sent to the server, we want to refresh our color with the current server data to make absolutely sure that the server received our tag. So, let's add that `when` callback:
+さて，`ColorController` にあるボタンのコールバックの中に `add_tag` を書きます．タグがサーバーに送信された後，サーバーがタグを本当に受信したか私たちが確認するために，現在のサーバーのデータで手元の色 ( とタグ ) をリフレッシュしたいです．それでは，その処理を `when` コールバックの中に書いていきましょう :
 
 ```ruby
   def viewDidLoad
@@ -461,21 +464,21 @@ Now we place the `add_tag` code inside our button callback in `ColorController`.
   end
 ```
 
-Let's walk through this. We add our `UIControlEventTouchUpInside` callback to `@add`, which calls `color.add_tag` and runs the appropriate POST request. When that request finishes, we call a new `refresh` method. This will run the normal `Color.find` request and reset our data.
+一連の処理を追ってみましょう．`@add` へ `UIControlEventTouchUpInside` コールバックを追加します．そのコールバックでは `color.add_tag` を呼び出し，適切な POST リクエストを実行します．そのリクエストが完了したあと，`refresh` メソッドを呼び出します．そのメソッドは `Color.find` リクエストを実行し，手元のデータをリセットします．
 
-Give it a `rake` and add a tag. Should go swimmingly.
+`rake` して，タグを追加してみます．サクッとできましたか．
 
 ![adding a tag](images/5.png)
 
-## Wrapping Up
+## まとめ
 
-Whew, that's a giant example. It's decently architected and demonstrates one way of separating responsibility between models and controllers. We could've done more with the views, maybe adding some KVO, but for such a small example it would've been overkill.
+ふー，大きな例ですね．ちゃんと設計がなされており，モデルとコントローラ間の責任を分離する一つの方法を示しています．ビューで様々なことをしたり，KVO を追加したり，もっと色々なことができたでしょうが，この程度の例では，それはやり過ぎだと思います．
 
-What should we take away from this?
+この例から何を学びましょうか？
 
-- Use models to represent your data, don't use the hashes you get returned from `JSON.parse`.
-- Run your URL requests in models.
-- Use your controllers to respond to callbacks and user events.
-- Keep the interface responsive by disabling or changing the UI while time consuming requests are running.
+- データを表現するのに，`JSON.parse` で得られるハッシュを直接使わず，モデルを使います．
+- モデルの中で URL リクエストを実行します．
+- コントローラを，コー​​ルバックとユーザーイベントに応答するのに使います．
+- 時間のかかるリクエストが実行されている間，UIを無効にしたり変更して，インターフェイスの応答性を保つ．
 
 [colr]: http://www.colr.org/api.html
