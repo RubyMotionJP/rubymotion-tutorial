@@ -103,7 +103,7 @@
         </div>
         <div class="span10" id="content">
           <div id="main">
-            <h1 id="toc_24">Testing</h1>
+            <h1 id="toc_0">Testing</h1>
 
 <p>これまで取り上げてきたすべてのものは、Objective-C と Ruby のごく一般的なものでした。もちろん両者は構文が異なり、Ruby と Objective-C のメリットについて主張できることでしょう。しかし、これまで扱ってきたものは通常の iOS のツールを使用していて同等のパフォーマンスを発揮します。それでは、RubyMotion 独自のものについて紹介しましょう。</p>
 
@@ -117,12 +117,12 @@
 
 <p>どれだけ簡単なのか見てみましょう。</p>
 
-<h2 id="toc_25">Unit Testing</h2>
+<h2 id="toc_1">Unit Testing</h2>
 
 <p>真新しい RubyMotion プロジェクトを <code>motion create Tests</code> で作成し、<code>cd</code> でプロジェクトへ移動しましょう。以前、<code>motion create</code> でデフォルトのフォルダが作成されることを書きましたが覚えてるでしょうか？ここでは、新しく <code>spec</code> を見ていくつもりです。</p>
 
 <p>RubyMotion は <code>./spec</code> フォルダの <code>*.rb</code> ファイルの一つ一つからテストを読み込みます。RubyMotion アプリを作成したときに、<code>./spec/main_spec.rb</code> にデフォルトのテストが次のように作られます。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax"><span class="n">describe</span> <span class="s2">&quot;Application &#39;Tests&#39;&quot;</span> <span class="k">do</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="n">describe</span> <span class="s2">&quot;Application &#39;Tests&#39;&quot;</span> <span class="k">do</span>
   <span class="n">before</span> <span class="k">do</span>
     <span class="vi">@app</span> <span class="o">=</span> <span class="no">UIApplication</span><span class="o">.</span><span class="n">sharedApplication</span>
   <span class="k">end</span>
@@ -131,20 +131,16 @@
     <span class="vi">@app</span><span class="o">.</span><span class="n">windows</span><span class="o">.</span><span class="n">size</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="mi">1</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p>少し時間を取ってすべての単語を本を読むように声に出して読み上げてみましょう。シンプルで表現力があるでしょう？<code>@app.windows.size.should == 1</code> は、「もし <code>.size</code> の値が 1 と等しくなければテストが失敗します」ということを <em>きっちり</em> 行います。</p>
 
 <p><code>.should</code> は他のどのような種類のオブジェクトでも同様に動作します。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax"><span class="vi">@app</span><span class="o">.</span><span class="n">nil?</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="kp">false</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="vi">@app</span><span class="o">.</span><span class="n">nil?</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="kp">false</span>
 
 <span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="o">].</span><span class="n">should</span><span class="o">.</span><span class="n">not</span> <span class="o">==</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="o">]</span>
 
 <span class="vi">@model</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="n">example_id</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p><code>describe</code> と <code>it</code> はテストの構造化に役に立ちます。これらの組み合わせを次のような文として読むことができます。&quot;&#39;Tests&#39; アプリケーションは一つの window があります&quot;。 <code>describe</code> ブロックにはたくさんの <code>it</code> を書くことができ、<code>it</code> にはたくさんの期待する値を書くことができます。<code>describe</code> ブロックは入れ子にすることもできます。</p>
 
 <p>生成されたテストで最後に取り上げるのは <code>before</code> ブロックです。<code>before</code> ブロックのコードは各テストの事前に実行されます。オブジェクトをリセットしたり、テスト項目の状態を設定するのに適した場所です。</p>
@@ -156,16 +152,14 @@
 <p><img src="images/1.png" alt="test failure"></p>
 
 <p>うぉぉ、私たちのアプリケーションはウィンドウが無いようです。<code>AppDelegate</code> を修正してみましょう。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax"><span class="k">class</span> <span class="nc">AppDelegate</span>
-  <span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="n">application</span><span class="p">,</span> <span class="n">didFinishLaunchingWithOptions</span><span class="ss">:launchOptions</span><span class="p">)</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">AppDelegate</span>
+  <span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="n">application</span><span class="p">,</span> <span class="ss">didFinishLaunchingWithOptions</span><span class="p">:</span><span class="n">launchOptions</span><span class="p">)</span>
     <span class="vi">@window</span> <span class="o">=</span> <span class="no">UIWindow</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithFrame</span><span class="p">(</span><span class="no">UIScreen</span><span class="o">.</span><span class="n">mainScreen</span><span class="o">.</span><span class="n">applicationFrame</span><span class="p">)</span>
     <span class="vi">@window</span><span class="o">.</span><span class="n">makeKeyAndVisible</span>
   <span class="kp">true</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p>再び <code>rake spec</code> を実行し、失敗が無いことを確認しましょう。</p>
 
 <p><img src="images/2.png" alt="test pass"></p>
@@ -174,24 +168,24 @@
 
 <p>それはオブジェクトのプロパティの動作をテストする方法の要点です。特定のものが存在するか、または属性と等しいかをチェックするのに非常に便利です。ただ、イベントを引き起こすために、おそらく多くの特定の機能や内部機能を呼び出す必要があります。たとえば、タップしたばかりのボタンの属性が変更変更されたかを確認したい場合には、手動でボタンのコールバックを起動する必要があります。よりよい方法があったら、、、</p>
 
-<h2 id="toc_26">Functional Testing</h2>
+<h2 id="toc_2">Functional Testing</h2>
 
 <p>実はそれはあります。RubyMotion もまた、タップやスワイプのような UI イベントを引き起こすものや副作用を調査する 機能テストについて素晴らしいサポートがあります。<code>button.callback.call</code> のように何かをする代わりに、<code>tap button</code> を使うことができます。すばらしいでしょ？</p>
 
 <p>これら機能テストは素晴らしいものですが、1 つの <code>UIViewController</code> の一部をテストすることを意図しており、新しいコントローラを押したり引いたりしません。</p>
 
 <p>これを動作させるために、新しい <code>UIViewController</code> のサブクラスがはじめに必要となります。<code>./app/ButtonController.rb</code> を作成し、次のようにボタンとコールバックを用意します。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax"><span class="k">class</span> <span class="nc">ButtonController</span> <span class="o">&lt;</span> <span class="no">UIViewController</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">ButtonController</span> <span class="o">&lt;</span> <span class="no">UIViewController</span>
   <span class="k">def</span> <span class="nf">viewDidLoad</span>
     <span class="k">super</span>
 
     <span class="vi">@button</span> <span class="o">=</span> <span class="no">UIButton</span><span class="o">.</span><span class="n">buttonWithType</span><span class="p">(</span><span class="no">UIButtonTypeRoundedRect</span><span class="p">)</span>
-    <span class="vi">@button</span><span class="o">.</span><span class="n">setTitle</span><span class="p">(</span><span class="s2">&quot;Test me title!&quot;</span><span class="p">,</span> <span class="n">forState</span><span class="ss">:UIControlStateNormal</span><span class="p">)</span>
+    <span class="vi">@button</span><span class="o">.</span><span class="n">setTitle</span><span class="p">(</span><span class="s2">&quot;Test me title!&quot;</span><span class="p">,</span> <span class="ss">forState</span><span class="p">:</span><span class="no">UIControlStateNormal</span><span class="p">)</span>
     <span class="vi">@button</span><span class="o">.</span><span class="n">accessibilityLabel</span> <span class="o">=</span> <span class="s2">&quot;Test me!&quot;</span>
     <span class="vi">@button</span><span class="o">.</span><span class="n">sizeToFit</span>
     <span class="nb">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">addSubview</span><span class="p">(</span><span class="vi">@button</span><span class="p">)</span>
 
-    <span class="vi">@button</span><span class="o">.</span><span class="n">addTarget</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="n">action</span><span class="ss">:&#39;tapped&#39;</span><span class="p">,</span> <span class="n">forControlEvents</span><span class="ss">:UIControlEventTouchUpInside</span><span class="p">)</span>
+    <span class="vi">@button</span><span class="o">.</span><span class="n">addTarget</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="ss">action</span><span class="p">:</span><span class="s1">&#39;tapped&#39;</span><span class="p">,</span> <span class="ss">forControlEvents</span><span class="p">:</span><span class="no">UIControlEventTouchUpInside</span><span class="p">)</span>
   <span class="k">end</span>
 
   <span class="k">def</span> <span class="nf">tapped</span>
@@ -199,30 +193,26 @@
     <span class="vi">@was_tapped</span> <span class="o">=</span> <span class="kp">true</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p>新しく登場した <code>accessibilityLabel</code> 以外は、ごく普通の <code>UIButton</code> パターンですね。</p>
 
 <p><code>accessibilityLabel</code> はそれぞれの <code>UIView</code> で利用できる文字列を扱うプロパティです。デバイスの VoiceOver 機能を利用する際にオペレーティングシステムによって読み上げられるテキストとして使用されます (それなので、余計なもので埋めないでください)。なぜ、今これを導入するのでしょう？ RubyMotion の機能テストは <code>accessibilityLabel</code> をもとにビューを探します。メモリ上のどこかに存在するだけでなく、確実にテストするビューが階層へ追加されます。</p>
 
 <p>最後に、<code>AppDelegate</code> でコントローラをウィンドウに接続する必要があります。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax"><span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="n">application</span><span class="p">,</span> <span class="n">didFinishLaunchingWithOptions</span><span class="ss">:launchOptions</span><span class="p">)</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="n">application</span><span class="p">,</span> <span class="ss">didFinishLaunchingWithOptions</span><span class="p">:</span><span class="n">launchOptions</span><span class="p">)</span>
   <span class="vi">@window</span> <span class="o">=</span> <span class="no">UIWindow</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithFrame</span><span class="p">(</span><span class="no">UIScreen</span><span class="o">.</span><span class="n">mainScreen</span><span class="o">.</span><span class="n">applicationFrame</span><span class="p">)</span>
   <span class="vi">@window</span><span class="o">.</span><span class="n">makeKeyAndVisible</span>
 
-  <span class="vi">@view_controller</span> <span class="o">=</span> <span class="no">ButtonController</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithNibName</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span> <span class="n">bundle</span><span class="ss">:nil</span><span class="p">)</span>
+  <span class="vi">@view_controller</span> <span class="o">=</span> <span class="no">ButtonController</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithNibName</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span> <span class="ss">bundle</span><span class="p">:</span><span class="kp">nil</span><span class="p">)</span>
   <span class="vi">@window</span><span class="o">.</span><span class="n">rootViewController</span> <span class="o">=</span> <span class="vi">@view_controller</span>
 
   <span class="kp">true</span>
 <span class="k">end</span>
-</code></pre>
-</div>
-
-<p><code>rake</code> を実行し、ボタンをタップすると Terminal に &quot;I&#39;m tapped!&quot; が表示されることを確認できます。では、変数が用意されてるか確認するためにTes.をと書いてみましょう。</p>
+</code></pre></div>
+<p><code>rake</code> を実行し、ボタンをタップすると Terminal に &quot;I&#39;m tapped!&quot; が表示されることを確認できます。では、変数が用意されてるか確認するために Test を書いてみましょう。</p>
 
 <p><code>main_spec.rb</code> で、新しく <code>describe</code> ブロックを追加します。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax"><span class="n">describe</span> <span class="s2">&quot;button controller&quot;</span> <span class="k">do</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="n">describe</span> <span class="s2">&quot;button controller&quot;</span> <span class="k">do</span>
   <span class="n">tests</span> <span class="no">ButtonController</span>
 
   <span class="n">it</span> <span class="s2">&quot;changes instance variable when button is tapped&quot;</span> <span class="k">do</span>
@@ -230,23 +220,19 @@
     <span class="n">controller</span><span class="o">.</span><span class="n">instance_variable_get</span><span class="p">(</span><span class="s2">&quot;@was_tapped&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="kp">true</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p>いいね！私たちは新しい遊び道具を手に入れたようです。</p>
 
 <p><code>tests &lt;class&gt;</code> は <code>describe</code> と指定された <code>UIViewController</code> のクラスと結びつけます。これは、<code>UIWindow</code> とテストするコントローラをインスタンス化します。テスト内でウィンドウとコントローラのそれぞれ <code>self.window</code> と <code>self.controller</code> でアクセスすることができます。これはテストの手順を壊してしまうような、余計な UI やステートが無い状況を保証してくれます。</p>
 
-<p>コントローラをテストするために Spec を用意し、<code>it</code> ブロックであっサーションを行います。もう一つの新しいおもちゃは <code>tap</code> です。 <code>tap</code> は最初の引数として <code>UIView</code> のオブジェクト <em>か</em> <code>accessibilityLabel</code> の値を取ります。<code>UIButton</code> と <code>UILabel</code> ではデフォルトでそれらの <code>title</code> の値が <code>accessibilityLabel</code> として使用できます。テストでほとんどのビューにアクセスできる方法についてはっきり示すために実装を見てきました。</p>
+<p>コントローラをテストするために Spec を用意し、<code>it</code> ブロックでアサーションを行います。もう一つの新しいおもちゃは <code>tap</code> です。 <code>tap</code> は最初の引数として <code>UIView</code> のオブジェクト <em>か</em> <code>accessibilityLabel</code> の値を取ります。<code>UIButton</code> と <code>UILabel</code> ではデフォルトでそれらの <code>title</code> の値が <code>accessibilityLabel</code> として使用できます。テストでほとんどのビューにアクセスできる方法についてはっきり示すために実装を見てきました。</p>
 
 <p><code>tap</code> の他にも、<code>flick</code>,  <code>drag</code>, <code>pinch_close</code>, <code>pinch_open</code>, そして <code>rotate</code> も使うことができます。それぞれについて、RubyMotion の <a href="http://rubymotion.jp/RubyMotionDocumentation/articles/testing/#_view_events">full documentation</a> で確認してみてください。</p>
 
 <p><code>rake spec</code> を実行し、実際に動作することを確認してみましょう。</p>
-<div class="highlight"><pre class='codehilite'><code class="text syntax">2 specifications (2 requirements), 0 failures, 0 errors
-</code></pre>
-</div>
-
-<h2 id="toc_27">Wrapping Up</h2>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">2 specifications (2 requirements), 0 failures, 0 errors
+</code></pre></div>
+<h2 id="toc_3">Wrapping Up</h2>
 
 <p>私たちは RubyMotion で難なくテストを書くことができます。もし、みなさんがこれまでプロジェクトでテストを書かれていないのでしたら、今から始めない理由はありません。</p>
 

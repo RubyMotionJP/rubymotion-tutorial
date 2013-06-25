@@ -103,32 +103,28 @@
         </div>
         <div class="span10" id="content">
           <div id="main">
-            <h1 id="toc_19">Models</h1>
+            <h1 id="toc_0">Models</h1>
 
 <p>これまでビューとコントローラを扱いましたが、MVC の <strong>M</strong> はどこへいってしまったのでしょう？これからモデルに突入するので、これ以上待つ必要はありません。私たちは <strong>VC</strong> パートですでにたくさんのコードを書いてきましたが、一般的にはモデルは本当は 3 つのうち一番巨大になります。</p>
 
 <p>RubyMotion では、モデルのために 2 つ大きなコンポーネントがあります。CoreData とそれ以外のすべてです。CoreData は iOS 向けの ORM の一種で、Rails の ActiveRecord と同様のものです。CoreData は信じられないほど強力なフレームワークで、それ自体で章が成り立つほどです。ここでは、RubyMotion で重要な 「CoreData 以外のすべて」を扱います。それでは、さっそくはじめましょう。</p>
 
-<h2 id="toc_20">Model-T</h2>
+<h2 id="toc_1">Model-T</h2>
 
 <p>モデルは一般的な Ruby のオブジェクトです。インスタンス変数をセット・ゲットするメソッドを宣言する場合に、普通の Ruby の <code>attr_[accessor/reader/writer]</code> を使用することができます。たとえば次のように基本的な <code>User</code> オブジェクトを作ってみましょう。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax"><span class="k">class</span> <span class="nc">User</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">User</span>
   <span class="kp">attr_accessor</span> <span class="ss">:id</span>
   <span class="kp">attr_accessor</span> <span class="ss">:name</span>
   <span class="kp">attr_accessor</span> <span class="ss">:email</span>
 <span class="k">end</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p>これでオブジェクトを次のように操作することができます。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax"><span class="vi">@user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">new</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="vi">@user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">new</span>
 <span class="vi">@user</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Clay&quot;</span>
 <span class="vi">@user</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="s2">&quot;clay@mail.com&quot;</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p>クールですがリモート API などを扱う場合に、取得するいくつかのデータからおそらく <code>User</code> をパースすることになるでしょう。これを行う方法はいつくかありますが、個人的に次の方法がお気に入りです。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax"><span class="k">class</span> <span class="nc">User</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">User</span>
   <span class="no">PROPERTIES</span> <span class="o">=</span> <span class="o">[</span><span class="ss">:id</span><span class="p">,</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:email</span><span class="o">]</span>
   <span class="no">PROPERTIES</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">prop</span><span class="o">|</span>
     <span class="kp">attr_accessor</span> <span class="n">prop</span>
@@ -140,33 +136,27 @@
     <span class="p">}</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p>これで、次のような巧妙なトリックを行うことができます。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax"><span class="n">server_hash</span> <span class="o">=</span> <span class="p">{</span> <span class="nb">name</span><span class="p">:</span> <span class="s2">&quot;Clay&quot;</span><span class="p">,</span> <span class="n">email</span><span class="p">:</span> <span class="s2">&quot;my@email.com&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="mi">1000</span> <span class="p">}</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="n">server_hash</span> <span class="o">=</span> <span class="p">{</span> <span class="nb">name</span><span class="p">:</span> <span class="s2">&quot;Clay&quot;</span><span class="p">,</span> <span class="ss">email</span><span class="p">:</span> <span class="s2">&quot;my@email.com&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="mi">1000</span> <span class="p">}</span>
 <span class="vi">@user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">server_hash</span><span class="p">)</span>
 <span class="vi">@user</span><span class="o">.</span><span class="n">name</span>
 <span class="o">=&gt;</span> <span class="no">Clay</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p>このスタイルは、単に定数 <code>PROPERTIES</code> を拡張することでより多くのプロパティを簡単に追加できます。モデルをシリアライズしたり、モデルの属性を何度も処理する必要がある場合にも便利です。あぁ、失礼、これは話の伏線ですね。</p>
 
-<h2 id="toc_21">NSCoding</h2>
+<h2 id="toc_2">NSCoding</h2>
 
 <p>それで今は、私たちはモデルにスケーラブルな基盤があり、サーバからいくつかデータを取得しています。データを取得するたびにリモート API を呼び出す代わりに、まずはじめにローカルのコピー (別名: キャッシュ) があるかをチェックしたいと思います。オブジェクトをファイルなどに保存するコードを作成できますが、より良いアイディアがあります。</p>
 
 <p>永続的な key-value ストアとして <code>NSUserDefaults</code> オブジェクトがあります。通常、オブジェクトとして <code>NSUserDefaults.standardUserDefaults</code> のインスタンスを次のように使用することができます。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax"><span class="vi">@defaults</span> <span class="o">=</span> <span class="no">NSUserDefaults</span><span class="o">.</span><span class="n">standardUserDefaults</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="vi">@defaults</span> <span class="o">=</span> <span class="no">NSUserDefaults</span><span class="o">.</span><span class="n">standardUserDefaults</span>
 <span class="vi">@defaults</span><span class="o">[</span><span class="s2">&quot;one&quot;</span><span class="o">]</span> <span class="o">=</span> <span class="mi">1</span>
 
 <span class="c1"># 別の場所で、あるいは、アプリを起動し直して値を取得します</span>
 <span class="vi">@defaults</span><span class="o">[</span><span class="s2">&quot;one&quot;</span><span class="o">]</span>
 <span class="o">=&gt;</span> <span class="mi">1</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p>とても良さそうでしょう？<code>NSUserDefaults</code> の値はアプリがインストールされているあいだ保存されます。値を急いで処理したい場合には、<code>NSUserDefaults.resetStandardUserDefaults</code> を実行することで全てのエントリを消去できます。</p>
 
 <p>ここで注意があります。<code>NSUserDefaults</code> には古いオブジェクトを格納することはできません。プリミティブな値(string, integer, hash など)の格納や生の data/byte 列 は使用することができます。<code>User</code> オブジェクトはプリミティブではないため、data メソッドを使う必要があります。どのように動作するのでしょうか？</p>
@@ -178,7 +168,7 @@
 <p>2 つのメソッドはよく似た並びにすべきでしょう。<code>encodeWithCoder</code> はいくつかのキーに対してオブジェクトの値のすべてを <em>エンコード</em> し、それから <code>initWithCoder</code> は <em>エンコード時と同じキー</em> でオブジェクトの値を <em>セット</em> します。</p>
 
 <p>さぁ、例を見てみましょう。二つのメソッドは基本的に正反対のことを行うことに注意してください。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax"><span class="k">class</span> <span class="nc">Post</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Post</span>
   <span class="kp">attr_accessor</span> <span class="ss">:message</span>
   <span class="kp">attr_accessor</span> <span class="ss">:id</span>
 
@@ -193,15 +183,13 @@
 
   <span class="c1"># NSUserDefaults へオブジェクトを保存するときに呼び出されます。</span>
   <span class="k">def</span> <span class="nf">encodeWithCoder</span><span class="p">(</span><span class="n">encoder</span><span class="p">)</span>
-    <span class="n">encoder</span><span class="o">.</span><span class="n">encodeObject</span><span class="p">(</span><span class="nb">self</span><span class="o">.</span><span class="n">message</span><span class="p">,</span> <span class="n">forKey</span><span class="p">:</span> <span class="s2">&quot;message&quot;</span><span class="p">)</span>
-    <span class="n">encoder</span><span class="o">.</span><span class="n">encodeObject</span><span class="p">(</span><span class="nb">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">forKey</span><span class="p">:</span> <span class="s2">&quot;id&quot;</span><span class="p">)</span>
+    <span class="n">encoder</span><span class="o">.</span><span class="n">encodeObject</span><span class="p">(</span><span class="nb">self</span><span class="o">.</span><span class="n">message</span><span class="p">,</span> <span class="ss">forKey</span><span class="p">:</span> <span class="s2">&quot;message&quot;</span><span class="p">)</span>
+    <span class="n">encoder</span><span class="o">.</span><span class="n">encodeObject</span><span class="p">(</span><span class="nb">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="ss">forKey</span><span class="p">:</span> <span class="s2">&quot;id&quot;</span><span class="p">)</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p>それではいったい何なのか再び見ていきましょう。上記のコードは <code>NSUserDefaults</code> で保存できるように、オブジェクトをデータに変換してくれます。実際にみてみましょう。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax"><span class="n">defaults</span> <span class="o">=</span> <span class="no">NSUserDefaults</span><span class="o">.</span><span class="n">standardUserDefaults</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="n">defaults</span> <span class="o">=</span> <span class="no">NSUserDefaults</span><span class="o">.</span><span class="n">standardUserDefaults</span>
 
 <span class="n">post</span> <span class="o">=</span> <span class="no">Post</span><span class="o">.</span><span class="n">new</span>
 <span class="n">post</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;hello!&quot;</span>
@@ -213,11 +201,9 @@
 <span class="c1"># あとで、次のようにこの post データをロードします</span>
 <span class="n">post_as_data</span> <span class="o">=</span> <span class="n">defaults</span><span class="o">[</span><span class="s2">&quot;saved_post&quot;</span><span class="o">]</span>
 <span class="n">post</span> <span class="o">=</span> <span class="no">NSKeyedUnarchiver</span><span class="o">.</span><span class="n">unarchiveObjectWithData</span><span class="p">(</span><span class="n">post_as_data</span><span class="p">)</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p><code>encodeObject</code> と <code>decodeObjectForKey</code> のこれらは長くてとても扱いにくいので、私たちの API モデルの構造を活用して、簡単に扱えるようにしましょう。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax"><span class="k">class</span> <span class="nc">User</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">User</span>
   <span class="o">.</span><span class="n">.</span><span class="o">.</span>
 
   <span class="k">def</span> <span class="nf">initWithCoder</span><span class="p">(</span><span class="n">decoder</span><span class="p">)</span>
@@ -232,17 +218,15 @@
   <span class="c1"># NSUserDefaults へオブジェクトを保存するときに呼び出されます。</span>
   <span class="k">def</span> <span class="nf">encodeWithCoder</span><span class="p">(</span><span class="n">encoder</span><span class="p">)</span>
     <span class="no">PROPERTIES</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">prop</span><span class="o">|</span>
-      <span class="n">encoder</span><span class="o">.</span><span class="n">encodeObject</span><span class="p">(</span><span class="nb">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">prop</span><span class="p">),</span> <span class="n">forKey</span><span class="p">:</span> <span class="n">prop</span><span class="o">.</span><span class="n">to_s</span><span class="p">)</span>
+      <span class="n">encoder</span><span class="o">.</span><span class="n">encodeObject</span><span class="p">(</span><span class="nb">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">prop</span><span class="p">),</span> <span class="ss">forKey</span><span class="p">:</span> <span class="n">prop</span><span class="o">.</span><span class="n">to_s</span><span class="p">)</span>
     <span class="p">}</span>
   <span class="k">end</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p>素敵ですよね？Objective-C の最大の苦痛の一つはモデルに新しい属性を追加することが簡単ではないことです。Ruby コードの魔術は私たちのコードを変更することを楽にしてくれます。</p>
 
 <p>今、私たちは <em>本当に</em> 堅牢で柔軟なモデルを持っています。それでは、変更したものを画面上に配置してみましょう。</p>
 
-<h2 id="toc_22">Key-Value Observing Example</h2>
+<h2 id="toc_3">Key-Value Observing Example</h2>
 
 <p>キー値監視(Key Value Observing、KVO) は本当にすごくクールで、大幅に時間を節約できるでしょう。</p>
 
@@ -261,34 +245,28 @@
 <p>Terminal で <code>gem install bubble-wrap</code> を実行します。ほかの gem のように、BubbleWrap がみなさんのマシンにインストールされます。しかし、RubyMotion 以外のプロジェクトで <code>require &quot;bubble-wrap&quot;</code> とした場合にはエラーとなります。</p>
 
 <p>次のように、<code>Rakefile</code> で <code>require &quot;bubble-wrap&quot;</code> を追加します。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax"><span class="vg">$:</span><span class="o">.</span><span class="n">unshift</span><span class="p">(</span><span class="s2">&quot;/Library/RubyMotion/lib&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="vg">$:</span><span class="o">.</span><span class="n">unshift</span><span class="p">(</span><span class="s2">&quot;/Library/RubyMotion/lib&quot;</span><span class="p">)</span>
 <span class="nb">require</span> <span class="s1">&#39;motion/project&#39;</span>
 <span class="nb">require</span> <span class="s1">&#39;bubble-wrap&#39;</span>
 
 <span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p>さぁ、コードを書いてみましょう。<code>user.rb</code> で、上記の概要に沿った堅牢で API を構築しやすい <code>User</code> クラスか、より簡易的なバージョンを使うことができます。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax"><span class="k">class</span> <span class="nc">User</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">User</span>
   <span class="kp">attr_accessor</span> <span class="ss">:id</span>
   <span class="kp">attr_accessor</span> <span class="ss">:name</span>
   <span class="kp">attr_accessor</span> <span class="ss">:email</span>
 <span class="k">end</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p><code>AppDelegate</code> では、<code>User</code> の <code>id</code>、 <code>name</code> と <code>email</code> の各フィールドのラベルを作ります。そのあと、オブジェクトのこれら属性の監視を開始し、それに従って各ラベルが更新されます。簡単そうですか？さぁ、それを見ていきましょう。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax"><span class="k">class</span> <span class="nc">AppDelegate</span>
-  <span class="kp">include</span> <span class="no">BW</span><span class="o">::</span><span class="no">KVO</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">AppDelegate</span>
+  <span class="kp">include</span> <span class="ss">BW</span><span class="p">:</span><span class="ss">:KVO</span>
 
   <span class="kp">attr_accessor</span> <span class="ss">:user</span>
   <span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p>BubbleWrap のナイスな KVO wrapper を使用するために、メソッドを <code>include</code> する必要があります。プロパティを監視する任意のオブジェクトに対してこの操作を行う必要があります。デバッグを楽にするために、<code>#user</code> という属性も追加します。view は以下のようになります。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax">  <span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="n">application</span><span class="p">,</span> <span class="n">didFinishLaunchingWithOptions</span><span class="ss">:launchOptions</span><span class="p">)</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="n">application</span><span class="p">,</span> <span class="ss">didFinishLaunchingWithOptions</span><span class="p">:</span><span class="n">launchOptions</span><span class="p">)</span>
     <span class="vi">@window</span> <span class="o">=</span> <span class="no">UIWindow</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithFrame</span><span class="p">(</span><span class="no">UIScreen</span><span class="o">.</span><span class="n">mainScreen</span><span class="o">.</span><span class="n">applicationFrame</span><span class="p">)</span>
     <span class="vi">@window</span><span class="o">.</span><span class="n">makeKeyAndVisible</span>
 
@@ -302,13 +280,11 @@
     <span class="vi">@window</span><span class="o">.</span><span class="n">addSubview</span><span class="p">(</span><span class="vi">@id_label</span><span class="p">)</span>
 
     <span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p><code>@window</code> にすべてのラベルを追加し、縦に並べています。みなさんはもっときれいな体裁にできますが、ここでは簡単にしておきます。</p>
 
 <p>最後にメインディッシュの <code>observe</code> です。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax">    <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">    <span class="o">.</span><span class="n">.</span><span class="o">.</span>
 
     <span class="nb">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">new</span>
 
@@ -321,20 +297,16 @@
     <span class="kp">true</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p>KVO の <code>observe</code> メソッドは、<code>observe(#&lt;object to be observed&gt;, &quot;the property&quot;) do ....</code> という形式です。<code>#each</code> メソッドの重複を取り除くためにここで Ruby の素晴らしいトリックを使います。もしプロパティがひとつだけでしたら次のようにすることができます。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax"><span class="n">observe</span><span class="p">(</span><span class="nb">self</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">old_value</span><span class="p">,</span> <span class="n">new_value</span><span class="o">|</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="n">observe</span><span class="p">(</span><span class="nb">self</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">old_value</span><span class="p">,</span> <span class="n">new_value</span><span class="o">|</span>
   <span class="nb">instance_variable_get</span><span class="p">(</span><span class="s2">&quot;@name_label&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">new_value</span>
 <span class="k">end</span>
-</code></pre>
-</div>
-
-<p>最高でしょう？ あと、次のことは覚えておいてください。<code>self.user</code> で起きていることを監視するようにしていしているので、<code>self.user</code> に再度オブジェクトを割り当てると監視動作は停止します。<code>self.user = some_other_user</code> とすると停止します。</p>
+</code></pre></div>
+<p>最高でしょう？ あと、次のことは覚えておいてください。<code>self.user</code> で起きていることを監視するようにしているので、<code>self.user</code> に再度オブジェクトを割り当てると監視動作は停止します。<code>self.user = some_other_user</code> とすると停止します。</p>
 
 <p>どのようにテストしたら良いでしょう？<code>rake</code> を実行してデバッグコンソールへ向かいましょう。私たちが正しく掘り下げていれば、<code>User</code> オブジェクトを取得することができ、それで遊ぶことができるはずです。</p>
-<div class="highlight"><pre class='codehilite'><code class="text syntax">$ rake
+<div class="highlight"><pre><code class="text language-text" data-lang="text">$ rake
   ...
 (main)&gt; delegate = UIApplication.sharedApplication.delegate
 =&gt; #&lt;AppDelegate .... &gt;
@@ -346,14 +318,12 @@
 =&gt; &quot;clay&quot;
 (main)&gt; user.id = &quot;9000&quot;
 =&gt; &quot;9000&quot;
-</code></pre>
-</div>
-
+</code></pre></div>
 <p>次のような結果となるはずです。</p>
 
 <p><img src="images/0.png" alt="KVO data"></p>
 
-<h2 id="toc_23">Wrapping Up</h2>
+<h2 id="toc_4">Wrapping Up</h2>
 
 <p>ちょっとだけ iOS の魅力的な部分で遊びましたが、確固たるモデルの構造と KVO はユーザエクスペリエンスと同様に重要です。次のことを、ここで学びました。</p>
 

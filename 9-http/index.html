@@ -103,41 +103,37 @@
         </div>
         <div class="span10" id="content">
           <div id="main">
-            <h1 id="toc_28">An Introduction to HTTP</h1>
+            <h1 id="toc_0">An Introduction to HTTP</h1>
 
 <p>これまで iOS 上の UI 構築について取り扱ってきました。しかしできることならサーバとデータのやりとりをするインタフェースにほとんどの時間を費やしたいことでしょう。これを行うために Apple が提供する方法は <code>NSURLConnection</code> を使うことです。これはとてもパワフルですが、HTTP リクエストを送信するためには冗長なクラスです。代わりに、<code>BubbleWrap</code> と呼ばれる最新の RubyMotion ライブラリを使う予定です。</p>
 
-<h2 id="toc_29">BubbleWrap It Up</h2>
+<h2 id="toc_1">BubbleWrap It Up</h2>
 
 <p>すでに述べたように、<a href="http://bubblewrap.io/">BubbleWrap</a> は iOS SDK 用の Ruby ラッパーのコレクションです。多くの Apple の API は、コールバックが設定されたオブジェクト上の決められたメソッドを呼び出すシステムを使用しています。したがって、BubbleWrap のラッパーの多くはこれらのコールバックメソッドを <code>lambda</code> と <code>block</code> で動くようにしているだけです。例として <code>BubbleWrap::HTTP</code> ラッパーを取り上げる予定です。</p>
 
 <p><code>Rakefile</code> に <code>require</code> を追加することを覚えておいてください。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax"><span class="vg">$:</span><span class="o">.</span><span class="n">unshift</span><span class="p">(</span><span class="s2">&quot;/Library/RubyMotion/lib&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="vg">$:</span><span class="o">.</span><span class="n">unshift</span><span class="p">(</span><span class="s2">&quot;/Library/RubyMotion/lib&quot;</span><span class="p">)</span>
 <span class="nb">require</span> <span class="s1">&#39;motion/project&#39;</span>
 <span class="nb">require</span> <span class="s1">&#39;rubygems&#39;</span>
 <span class="nb">require</span> <span class="s1">&#39;bubble-wrap&#39;</span>
 
 <span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p><code>BubbleWrap::HTTP</code> ライブラリでは、HTTP リクエストメソッドとしてそれぞれ <code>HTTP.get</code>, <code>HTTP.post</code>, <code>HTTP.put</code> などの機能を使えます。それぞれのメソッドは引数として URL 文字列とオプションのハッシュ、リクエストが終了したときのコールバックブロックを取ります。以下は、いくつか短いそれらのサンプルです。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax"><span class="no">BubbleWrap</span><span class="o">::</span><span class="no">HTTP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;http://google.com&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">response</span><span class="o">|</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="ss">BubbleWrap</span><span class="p">:</span><span class="ss">:HTTP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;http://google.com&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">response</span><span class="o">|</span>
   <span class="nb">p</span> <span class="n">response</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">to_str</span>
 <span class="k">end</span>
 
 <span class="c1"># BW is alias for BubbleWrap</span>
-<span class="no">BW</span><span class="o">::</span><span class="no">HTTP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;http://www.bing.com/search&quot;</span><span class="p">,</span> <span class="n">payload</span><span class="p">:</span> <span class="p">{</span><span class="n">q</span><span class="p">:</span> <span class="s2">&quot;some query&quot;</span><span class="p">})</span> <span class="k">do</span> <span class="o">|</span><span class="n">response</span><span class="o">|</span>
+<span class="ss">BW</span><span class="p">:</span><span class="ss">:HTTP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;http://www.bing.com/search&quot;</span><span class="p">,</span> <span class="ss">payload</span><span class="p">:</span> <span class="p">{</span><span class="ss">q</span><span class="p">:</span> <span class="s2">&quot;some query&quot;</span><span class="p">})</span> <span class="k">do</span> <span class="o">|</span><span class="n">response</span><span class="o">|</span>
   <span class="c1"># sends request to http://www.bing.com/search?q=some+query</span>
 <span class="k">end</span>
 
-<span class="no">BW</span><span class="o">::</span><span class="no">HTTP</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;https://graph.facebook.com/123123123/comments&quot;</span><span class="p">,</span> <span class="n">payload</span><span class="p">:</span> <span class="p">{</span><span class="n">message</span><span class="p">:</span> <span class="s2">&quot;This is a comment&quot;</span><span class="p">})</span> <span class="k">do</span> <span class="o">|</span><span class="n">response</span><span class="o">|</span>
+<span class="ss">BW</span><span class="p">:</span><span class="ss">:HTTP</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;https://graph.facebook.com/123123123/comments&quot;</span><span class="p">,</span> <span class="ss">payload</span><span class="p">:</span> <span class="p">{</span><span class="ss">message</span><span class="p">:</span> <span class="s2">&quot;This is a comment&quot;</span><span class="p">})</span> <span class="k">do</span> <span class="o">|</span><span class="n">response</span><span class="o">|</span>
   <span class="c1"># sends request to https://graph.facebook.com/123123123/comments</span>
   <span class="c1"># with body params `message=This is a comment`</span>
 <span class="k">end</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p>かなり良さそうに見えるでしょう？リクエストにより多くの情報 (ファイル、ヘッダー、HTTP 認証) を追加することができます。私たちが遊んだ API は GET と POST を使用しただけです。(<a href="https://github.com/rubymotion/BubbleWrap/blob/master/motion/http.rb">HTTP documentation</a> で詳細をチェックできます)</p>
 
 <p>ちょっと待って、私たちは実際に何を作るんでしょう？</p>

@@ -103,7 +103,7 @@
         </div>
         <div class="span10" id="content">
           <div id="main">
-            <h1 id="toc_8">Controllers</h1>
+            <h1 id="toc_0">Controllers</h1>
 
 <p>ビューについていくつかふれてきましたが、しかしそれは iOS SDK が使用する &quot;Model-View-Controller&quot; パラダイムの 1 つです。MVC は複雑に聞こえますが、実際には非常にシンプルです。</p>
 
@@ -131,38 +131,34 @@
 
 <p>OK、説明は終わりです。マイケル・ベイ監督がアクションを撮影する時間ですね。</p>
 
-<h2 id="toc_9">Everything Is Under Controllers</h2>
+<h2 id="toc_1">Everything Is Under Controllers</h2>
 
 <p><code>./app/controllers</code> ディレクトリを作成し (<code>mkdir ./app/controllers</code>)、<code>TapController.rb</code> ファイルをディレクトリ内に追加します。さぁ、次のようにコントローラを書き始めましょう。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax"><span class="k">class</span> <span class="nc">TapController</span> <span class="o">&lt;</span> <span class="no">UIViewController</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">TapController</span> <span class="o">&lt;</span> <span class="no">UIViewController</span>
   <span class="k">def</span> <span class="nf">viewDidLoad</span>
     <span class="k">super</span>
 
     <span class="nb">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">backgroundColor</span> <span class="o">=</span> <span class="no">UIColor</span><span class="o">.</span><span class="n">redColor</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p><code>viewDidLoad</code> は <code>UIViewController</code> のライフサイクルを形作るメソッドの 1 つで、<code>self.view</code> で示されるビューが作成され、追加されたサブビューが利用できるようになると呼び出されます。今日のところは、赤い背景色のビューとしておきましょう。</p>
 
 <p>皆さんは、絶対に、疑うこと無く、<code>viewDidLoad</code> で <code>super</code> を呼び出す必要があります。そうでなければ、良くないことが起こるでしょう。分かりました？</p>
 
 <p>さて、<code>AppDelegate</code> へ戻り、以前の <code>UIView</code> のコードを削除しましょう。私たちは 1 行追加する必要があり、次のようになります。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax"><span class="k">class</span> <span class="nc">AppDelegate</span>
-  <span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="n">application</span><span class="p">,</span> <span class="n">didFinishLaunchingWithOptions</span><span class="ss">:launchOptions</span><span class="p">)</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">AppDelegate</span>
+  <span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="n">application</span><span class="p">,</span> <span class="ss">didFinishLaunchingWithOptions</span><span class="p">:</span><span class="n">launchOptions</span><span class="p">)</span>
     <span class="vi">@window</span> <span class="o">=</span> <span class="no">UIWindow</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithFrame</span><span class="p">(</span><span class="no">UIScreen</span><span class="o">.</span><span class="n">mainScreen</span><span class="o">.</span><span class="n">bounds</span><span class="p">)</span>
     <span class="vi">@window</span><span class="o">.</span><span class="n">makeKeyAndVisible</span>
 
     <span class="c1"># This is our new line!</span>
-    <span class="vi">@window</span><span class="o">.</span><span class="n">rootViewController</span> <span class="o">=</span> <span class="no">TapController</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithNibName</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span> <span class="n">bundle</span><span class="p">:</span> <span class="kp">nil</span><span class="p">)</span>
+    <span class="vi">@window</span><span class="o">.</span><span class="n">rootViewController</span> <span class="o">=</span> <span class="no">TapController</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithNibName</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span> <span class="ss">bundle</span><span class="p">:</span> <span class="kp">nil</span><span class="p">)</span>
 
     <span class="kp">true</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p><code>rootViewController=</code> の呼び出しが分かりますか？ window が与えられた <code>UIViewController</code> を受け取り、window にフィットするように <code>view</code> のサイズを調整します。これは、window をセットアップするための良い方法です(<code>window.addSubview</code> とは対照的に)。</p>
 
 <p>追加した行でほかに新しい部分は <code>initWithNibName:bundle:</code> です。一般的に、これは <code>NIB</code> ファイルからコントローラを読み込むために使われます。<code>NIB</code> は Xcode の Interface Builder を使うことで作られます。私たちのコントローラのためには Interface Builder を使っていないので、2 つの引数の両方に nil を渡すことができます。</p>
@@ -174,7 +170,7 @@
 <p><img src="images/1.png" alt="first controller"></p>
 
 <p>大事は小事より起こります。さぁ、コントローラに小さな変更を行いましょう。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax">  <span class="k">def</span> <span class="nf">viewDidLoad</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">def</span> <span class="nf">viewDidLoad</span>
     <span class="k">super</span>
 
     <span class="nb">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">backgroundColor</span> <span class="o">=</span> <span class="no">UIColor</span><span class="o">.</span><span class="n">whiteColor</span>
@@ -185,9 +181,7 @@
     <span class="vi">@label</span><span class="o">.</span><span class="n">center</span> <span class="o">=</span> <span class="no">CGPointMake</span><span class="p">(</span><span class="nb">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">size</span><span class="o">.</span><span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nb">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">size</span><span class="o">.</span><span class="n">height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
     <span class="nb">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">addSubview</span> <span class="vi">@label</span>
   <span class="k">end</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p>ワイルドな <code>UILabel</code> が登場です！<code>UILabel</code> は <code>text</code> プロパティで静的なテキストを表示するためのビューです。テキストに &quot;Taps&quot; を設定し、サブビューとしてそれを追加しています。</p>
 
 <p>画面に表示するテキストの正確なサイズがまだ分からないので、<code>UILabel</code> を初期化するときに、<code>CGRectZero</code> を frame に使います。しかし、<code>sizeToFit</code> を呼び出すと、内容に合わせて完全にフィットするようにラベルがリサイズします。そして便利な <code>center</code> プロパティを使い、ラベルをコントローラのビューの中央に揃えます。</p>
@@ -196,7 +190,7 @@
 
 <p><img src="images/2.png" alt="with a label"></p>
 
-<h2 id="toc_10">Wrap Up</h2>
+<h2 id="toc_2">Wrap Up</h2>
 
 <p>今回、学んだことは何だった？</p>
 

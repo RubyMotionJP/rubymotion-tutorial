@@ -103,7 +103,7 @@
         </div>
         <div class="span10" id="content">
           <div id="main">
-            <h1 id="toc_17">Animations</h1>
+            <h1 id="toc_0">Animations</h1>
 
 <p>みなさんが iOS と他のモバイル OS との最大の違いについてユーザに尋ねると、アニメーションは間違いなくトップの答えのひとつとなるでしょう。フェード、フリップ、回転、バウンド、カールは Apple のアプリにありふれています。</p>
 
@@ -112,7 +112,7 @@
 <p>さぁ、さっそくいくつか遊んでみましょう。画面の周りにボックスを移動させてみましょう。私を信じてください。コードは今述べた通りにシンプルです。</p>
 
 <p><code>window</code> にビューを追加することから始め、そして設定したポイントの周辺でアニメーションします。これは比較的に短いので、ここで <code>AppDelegate</code> のすべての変更を破棄しましょう。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax"><span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="n">application</span><span class="p">,</span> <span class="n">didFinishLaunchingWithOptions</span><span class="ss">:launchOptions</span><span class="p">)</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="n">application</span><span class="p">,</span> <span class="ss">didFinishLaunchingWithOptions</span><span class="p">:</span><span class="n">launchOptions</span><span class="p">)</span>
   <span class="vi">@window</span> <span class="o">=</span> <span class="no">UIWindow</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithFrame</span><span class="p">(</span><span class="no">UIScreen</span><span class="o">.</span><span class="n">mainScreen</span><span class="o">.</span><span class="n">applicationFrame</span><span class="p">)</span>
   <span class="vi">@window</span><span class="o">.</span><span class="n">makeKeyAndVisible</span>
 
@@ -137,26 +137,22 @@
   <span class="vi">@current_index</span> <span class="o">=</span> <span class="vi">@current_index</span> <span class="o">%</span> <span class="vi">@points</span><span class="o">.</span><span class="n">count</span>
 
   <span class="no">UIView</span><span class="o">.</span><span class="n">animateWithDuration</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span>
-    <span class="n">animations</span><span class="p">:</span> <span class="nb">lambda</span> <span class="p">{</span>
+    <span class="ss">animations</span><span class="p">:</span> <span class="nb">lambda</span> <span class="p">{</span>
        <span class="vi">@view</span><span class="o">.</span><span class="n">frame</span> <span class="o">=</span> <span class="o">[</span><span class="vi">@points</span><span class="o">[</span><span class="vi">@current_index</span><span class="o">]</span><span class="p">,</span> <span class="o">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="o">]]</span>
     <span class="p">},</span>
-    <span class="n">completion</span><span class="ss">:lambda</span> <span class="p">{</span><span class="o">|</span><span class="n">finished</span><span class="o">|</span>
+    <span class="ss">completion</span><span class="p">:</span><span class="nb">lambda</span> <span class="p">{</span><span class="o">|</span><span class="n">finished</span><span class="o">|</span>
       <span class="nb">self</span><span class="o">.</span><span class="n">animate_to_next_point</span>
     <span class="p">}</span>
   <span class="p">)</span>
 <span class="k">end</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p>このコードには新しく登場したものが 2 つあります。最初に、<code>[[0, 0], [100, 100]]</code> という構文は <code>frame</code> のためのものです。入れ子にした配列はこれまで使ってきた <code>CGRectMake</code> を簡略化したものです。最初の配列は <code>origin</code> の値を表し、二つ目の配列は <code>size</code> の値を表しています。<code>frame</code> を変更するために <code>@points</code> を簡単に使用することができ、素晴らしいことです。</p>
 
 <p>二つ目は <code>lambda</code> です。もしこの用語を慣れていなければ、<code>lambda</code> は伝統的に小さな関数で変数が割り当てられたり引数が渡されたりするものです。たとえば、<code>my_lambda = lambda { p &quot;Hello!&quot; }</code> とすることができます。ここで <code>my_lambda.call</code> を実行すると、<code>lambda</code> ブロック内のコードが実行されます。<code>lambda</code> は引数を持つこともできます。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax"><span class="n">my_lambda</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="o">|</span><span class="nb">name</span><span class="o">|</span> <span class="nb">p</span> <span class="s2">&quot;Hello </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">!&quot;</span> <span class="p">}</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="n">my_lambda</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="o">|</span><span class="nb">name</span><span class="o">|</span> <span class="nb">p</span> <span class="s2">&quot;Hello </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">!&quot;</span> <span class="p">}</span>
 <span class="n">my_lambda</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="s2">&quot;Clay&quot;</span><span class="p">)</span>
 <span class="o">=&gt;</span> <span class="no">Hello</span> <span class="no">Clay</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p>さて、アニメーションの例に戻りましょう。いつものような window を作成し、ボックスを移動するためにいくつかポイントを定義します。window にボックス (<code>@view</code>) を追加し、<code>animate_to_next_point</code> を開始することでよく知られたマジックが起こります。</p>
 
 <p><code>UIView.animateWithDuration:animations:completion:</code> はアニメーションを制御するものです。たくさんのパーツがこのメソッドにあるので、ひとつずつ見ていきましょう。</p>
@@ -182,27 +178,25 @@
 <p>(<code>UIView.animate...</code> でより設定項目が少ない <code>animateWithDuration:animations:</code> というものもあります)。</p>
 
 <p>とにかく、動かしてみましょう。<code>animate_to_next_point</code> メソッドを次のように変更します。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax"><span class="k">def</span> <span class="nf">animate_to_next_point</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">animate_to_next_point</span>
   <span class="vi">@current_index</span> <span class="o">+=</span> <span class="mi">1</span>
   <span class="vi">@current_index</span> <span class="o">=</span> <span class="vi">@current_index</span> <span class="o">%</span> <span class="vi">@points</span><span class="o">.</span><span class="n">count</span>
 
   <span class="no">UIView</span><span class="o">.</span><span class="n">animateWithDuration</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span>
-    <span class="n">delay</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="n">options</span><span class="p">:</span> <span class="no">UIViewAnimationOptionCurveLinear</span><span class="p">,</span>
-    <span class="n">animations</span><span class="p">:</span> <span class="nb">lambda</span> <span class="p">{</span>
+    <span class="ss">delay</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="ss">options</span><span class="p">:</span> <span class="no">UIViewAnimationOptionCurveLinear</span><span class="p">,</span>
+    <span class="ss">animations</span><span class="p">:</span> <span class="nb">lambda</span> <span class="p">{</span>
        <span class="vi">@view</span><span class="o">.</span><span class="n">frame</span> <span class="o">=</span> <span class="o">[</span><span class="vi">@points</span><span class="o">[</span><span class="vi">@current_index</span><span class="o">]</span><span class="p">,</span> <span class="o">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="o">]]</span>
-    <span class="p">},</span> <span class="n">completion</span><span class="ss">:lambda</span> <span class="p">{</span><span class="o">|</span><span class="n">finished</span><span class="o">|</span>
+    <span class="p">},</span> <span class="ss">completion</span><span class="p">:</span><span class="nb">lambda</span> <span class="p">{</span><span class="o">|</span><span class="n">finished</span><span class="o">|</span>
       <span class="nb">self</span><span class="o">.</span><span class="n">animate_to_next_point</span>
     <span class="p">})</span>
 <span class="k">end</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p><code>rake</code> を実行し、新しいアニメーションをチェックしましょう。</p>
 
 <p>古くさいもののように見えますが、その動作はかなり異なっていますよね？ポイント間でいくらか時間がかかるようになり、スライドはよりメカニカルです。</p>
 
-<h2 id="toc_18">You Know This Section</h2>
+<h2 id="toc_1">You Know This Section</h2>
 
 <p>iOS の基本的なアニメーションを扱ってきました。これまでどんなことをやってきましたか？</p>
 

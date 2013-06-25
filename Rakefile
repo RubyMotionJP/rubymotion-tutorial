@@ -2,7 +2,7 @@ task :deploy do
   system 'git checkout japanese'
   system 'rm -rf ./_site'
   system 'mkdir _site'
-  system 'jekyll'
+  system 'jekyll build'
   system 'rm -rf ../_site'
   system 'cp -r ./_site ../_site'
   system 'git checkout gh-pages'
@@ -20,7 +20,7 @@ task :deploy do
   msg = `git status`
   system 'git add .'
   system "git commit -m 'Sync gh-pages \n #{msg}'"
-  system 'git push origin gh-pages'
-  system 'git checkout japanese'
-  system 'rm -rf ../_site'
+  # system 'git push origin gh-pages'
+  # system 'git checkout japanese'
+  # system 'rm -rf ../_site'
 end

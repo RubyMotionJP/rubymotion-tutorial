@@ -103,7 +103,7 @@
         </div>
         <div class="span10" id="content">
           <div id="main">
-            <h1 id="toc_11">Containers</h1>
+            <h1 id="toc_0">Containers</h1>
 
 <p>さて、私たちは大きな白い画面を手にしました。それをドレスアップしましょう！</p>
 
@@ -111,31 +111,27 @@
 
 <p>これらのコンテナは <code>UIViewController</code> のサブクラスで、ほかの <code>UIViewController</code> を管理します。ワイルドだろ？コンテナは通常のコントローラのように <code>view</code> を持っていて、サブビューとして「子」のコントローラのビューが追加されます。ありがたいことに、これらのコンテナコントローラは、ビューでは無くコントローラを処理するために便利な API が用意されているので、私たちは <em>どのように</em> 動くか心配する必要がありません。</p>
 
-<h2 id="toc_12">UINavigationController</h2>
+<h2 id="toc_1">UINavigationController</h2>
 
 <p>最も一般的な <code>UINavigationController</code> で始めてみましょう。スタックとして子のコントローラを管理し、見た目には水平方向にプッシュ/ポップが行われます。Mail.app では、Accounts -&gt; An Account -&gt; Inbox -&gt; Message というフローのために <code>UINavigationController</code> が使われています。ナビゲーションコントローラは自動的に戻るためのボタンを処理してくれるため本当にすばらしいです。みなさんがしなければいけないのは、コントローラをプッシュ/ポップすることだけです。</p>
 
 <p><img src="images/nav_bar.png" alt="Navigation controller in Mail.app"></p>
 
 <p><code>AppDelegate</code> で、<code>rootViewController</code> に割り当てていたコントローラを <code>UINavigationController</code> を使って変更しましょう。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax">  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
-  <span class="n">controller</span> <span class="o">=</span> <span class="no">TapController</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithNibName</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span> <span class="n">bundle</span><span class="p">:</span> <span class="kp">nil</span><span class="p">)</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+  <span class="n">controller</span> <span class="o">=</span> <span class="no">TapController</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithNibName</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span> <span class="ss">bundle</span><span class="p">:</span> <span class="kp">nil</span><span class="p">)</span>
   <span class="vi">@window</span><span class="o">.</span><span class="n">rootViewController</span> <span class="o">=</span> <span class="no">UINavigationController</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithRootViewController</span><span class="p">(</span><span class="n">controller</span><span class="p">)</span>
   <span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p><code>initWithRootViewController</code> は指定されたコントローラを受け取り、そのコントローラでスタックを開始します。</p>
 
 <p>アプリを実行する前に、<code>TapController</code> でもう少し変更を行います。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax">  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
   <span class="nb">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">addSubview</span> <span class="vi">@label</span>
 
   <span class="nb">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Tap&quot;</span>
   <span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p><code>rake</code> を実行して、すこしきれいになったアプリを確認してみましょう。</p>
 
 <p><img src="images/1.png" alt="Navigation controller"></p>
@@ -145,68 +141,60 @@
 <p>画面上部のナビゲーションバーに実際にボタンを配置することができます。たとえば、Mail.app では「編集」ボタンがナビゲーションバーに配置されています。これらのボタンは <code>UIBarButtonItem</code> のインスタンスで、いくつかオプションを設定できます(テキストを使用する？画像は？システムアイコンは？などなど)。</p>
 
 <p><code>TapController</code> の <code>viewDidLoad</code> で、ボタンを追加してみましょう。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax"><span class="k">def</span> <span class="nf">viewDidLoad</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">viewDidLoad</span>
   <span class="o">.</span><span class="n">.</span><span class="o">.</span>
   <span class="nb">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Tap&quot;</span>
 
-  <span class="n">right_button</span> <span class="o">=</span> <span class="no">UIBarButtonItem</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithTitle</span><span class="p">(</span><span class="s2">&quot;Push&quot;</span><span class="p">,</span> <span class="n">style</span><span class="p">:</span> <span class="no">UIBarButtonItemStyleBordered</span><span class="p">,</span> <span class="n">target</span><span class="ss">:self</span><span class="p">,</span> <span class="n">action</span><span class="ss">:&#39;push&#39;</span><span class="p">)</span>
+  <span class="n">right_button</span> <span class="o">=</span> <span class="no">UIBarButtonItem</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithTitle</span><span class="p">(</span><span class="s2">&quot;Push&quot;</span><span class="p">,</span> <span class="ss">style</span><span class="p">:</span> <span class="no">UIBarButtonItemStyleBordered</span><span class="p">,</span> <span class="ss">target</span><span class="p">:</span><span class="nb">self</span><span class="p">,</span> <span class="ss">action</span><span class="p">:</span><span class="s1">&#39;push&#39;</span><span class="p">)</span>
   <span class="nb">self</span><span class="o">.</span><span class="n">navigationItem</span><span class="o">.</span><span class="n">rightBarButtonItem</span> <span class="o">=</span> <span class="n">right_button</span>
 <span class="k">end</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p>これが何をしているのか詳しく見てみましょう。ボタンのタイトルとスタイルを指定して <code>UIBarButtonItem</code> を作成します。スタイルプロパティは、ボタンの見た目を決めます(枠線が無いボタン、枠線があるボタン、操作を「完了」するときなどに用いる青いボタン。違いを確認するために遊んでみてください)。次に、ボタンを コントローラの <code>navigationItem</code> の <code>rightBarButtonItem</code> へ設定します。すべての <code>UIViewController</code> には <code>navigationItem</code> があり、画面上部の青いバーで表示されている情報へアクセスするための手段となります。
 (注意: <code>UINavigationItem</code> は <code>UIView</code> ではありません！そのため、サブビューを追加することはできません)。</p>
 
 <p><code>target</code> と <code>action</code> の役割は何でしょう？えぇと、これは Ruby の世界へオリジナルの Objective-C SDK が漏れ出てきたものです(´д｀) ごく最近まで、Objecive-C で無名関数をコールバックとして渡すことができませんでした。その代替手段として、オブジェクトとオブジェクトから呼び出すメソッドの名前を API に渡しています。私たちはこの処理を Ruby でブロックと lambda で行いますが、悲しいことに古い iOS の API は古くささを示してます。</p>
 
 <p>それはさておき、<code>target</code> は <code>action</code> のメソッドを呼び出してもらいたいオブジェクトを指定します。より良いアイディアを得るために <code>TapController</code> へ <code>push</code> メソッドを実装してみましょう！</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax"><span class="o">.</span><span class="n">.</span><span class="o">.</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="o">.</span><span class="n">.</span><span class="o">.</span>
   <span class="k">def</span> <span class="nf">push</span>
-    <span class="n">new_controller</span> <span class="o">=</span> <span class="no">TapController</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithNibName</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span> <span class="n">bundle</span><span class="p">:</span> <span class="kp">nil</span><span class="p">)</span>
-    <span class="nb">self</span><span class="o">.</span><span class="n">navigationController</span><span class="o">.</span><span class="n">pushViewController</span><span class="p">(</span><span class="n">new_controller</span><span class="p">,</span> <span class="n">animated</span><span class="p">:</span> <span class="kp">true</span><span class="p">)</span>
+    <span class="n">new_controller</span> <span class="o">=</span> <span class="no">TapController</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithNibName</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span> <span class="ss">bundle</span><span class="p">:</span> <span class="kp">nil</span><span class="p">)</span>
+    <span class="nb">self</span><span class="o">.</span><span class="n">navigationController</span><span class="o">.</span><span class="n">pushViewController</span><span class="p">(</span><span class="n">new_controller</span><span class="p">,</span> <span class="ss">animated</span><span class="p">:</span> <span class="kp">true</span><span class="p">)</span>
   <span class="k">end</span>
 <span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p>どうでしょう？ユーザがバーのボタンをタップしたときに、<code>target</code> で指定したオブジェクト(このケースでは私たちのコントローラ) の <code>push</code> が呼ばれます。</p>
 
 <p><code>navigationItem</code> に付け加えると、利用可能な場合には <code>UIViewController</code> は <code>navigationController</code> というプロパティも持っています。ナビゲーションコントローラでは、<code>pushViewController</code> を呼び出すと渡されたコントローラをスタック上にプッシュします。デフォルトでは、ナビゲーションコントローラは戻るボタンも表示します。この戻るボタンは現在のコントローラをポップする処理を行います(通常は、ナビゲーションコントローラ上で <code>popViewControllerAnimated:</code> を私たちが呼び出します)。ちゃんとわかりましたか？</p>
 
 <p>アプリを実行する前にもう少しだけ手を加えてみましょう。次のように、ナビゲーションスタックでのコントローラの位置をコントローラのタイトルに反映してみましょう。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax">  <span class="k">def</span> <span class="nf">viewDidLoad</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">def</span> <span class="nf">viewDidLoad</span>
     <span class="o">.</span><span class="n">.</span><span class="o">.</span>
     <span class="nb">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Tap (</span><span class="si">#{</span><span class="nb">self</span><span class="o">.</span><span class="n">navigationController</span><span class="o">.</span><span class="n">viewControllers</span><span class="o">.</span><span class="n">count</span><span class="si">}</span><span class="s2">)&quot;</span>
     <span class="o">.</span><span class="n">.</span><span class="o">.</span>
   <span class="k">end</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p>さぁ、<code>rake</code> を実行して動的に変化するコントローラを観察してみましょう！</p>
 
 <p><img src="images/2.png" alt="pushable controllers"></p>
 
 <p>さて、<code>UITabController</code> も取り扱うよと言いましたので、さっそくそれに取りかかってみましょう。</p>
 
-<h2 id="toc_13">UITabBarController</h2>
+<h2 id="toc_2">UITabBarController</h2>
 
 <p><img src="images/tab_bar.png" alt="Navigation controller in Mail.app"></p>
 
 <p>タブコントローラは <code>UINavigationController</code> やほかのコンテナコントローラとよく似て、コンテナのメッキ部分(黒いバーのところ)に提示される <code>viewControllers</code> のリストを持っています。しかし異なる点もあり、<code>UITabBarController</code> は window の <code>rootViewController</code> として動作することのみをサポートしています。(すなわち、ナビゲーションコントローラでタブバーコントローラをプッシュしてはいけません)。</p>
 
 <p><code>AppDelegate</code> で、小さな変更を加えてみましょう。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax">  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
-  <span class="n">controller</span> <span class="o">=</span> <span class="no">TapController</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithNibName</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span> <span class="n">bundle</span><span class="p">:</span> <span class="kp">nil</span><span class="p">)</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+  <span class="n">controller</span> <span class="o">=</span> <span class="no">TapController</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithNibName</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span> <span class="ss">bundle</span><span class="p">:</span> <span class="kp">nil</span><span class="p">)</span>
   <span class="n">nav_controller</span> <span class="o">=</span> <span class="no">UINavigationController</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithRootViewController</span><span class="p">(</span><span class="n">controller</span><span class="p">)</span>
 
-  <span class="n">tab_controller</span> <span class="o">=</span> <span class="no">UITabBarController</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithNibName</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span> <span class="n">bundle</span><span class="p">:</span> <span class="kp">nil</span><span class="p">)</span>
+  <span class="n">tab_controller</span> <span class="o">=</span> <span class="no">UITabBarController</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithNibName</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span> <span class="ss">bundle</span><span class="p">:</span> <span class="kp">nil</span><span class="p">)</span>
   <span class="n">tab_controller</span><span class="o">.</span><span class="n">viewControllers</span> <span class="o">=</span> <span class="o">[</span><span class="n">nav_controller</span><span class="o">]</span>
   <span class="vi">@window</span><span class="o">.</span><span class="n">rootViewController</span> <span class="o">=</span> <span class="n">tab_controller</span>
   <span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p>これまでのコード例と異なり、新しいものは何もありません！<code>UITabBarController</code> を普通の <code>UIViewController</code> のときのように作成し、タブコントローラの <code>viewControllers</code> にナビゲーションコントローラを配列に入れたものを設定しています。</p>
 
 <p><code>rake</code> を実行し、チェックしてみましょう！</p>
@@ -218,16 +206,14 @@
 <p><code>navigationItem</code> と同様に、すべての <code>UIViewController</code> には <code>tabBarItem</code> というプロパティがあり、<code>UITabBarItem</code> のインスタンスを受け付けます。アイコン、タイトル、あるいはコントローラのタブ部分の見た目に関するオプションをカスタマイズする際にこのオブジェクトを使うことができます。</p>
 
 <p>TapController で <code>initWithNibName:bundle:</code> をオーバーライドし、次のようなオブジェクトを作成します。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax">  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
-  <span class="k">def</span> <span class="nf">initWithNibName</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">bundle</span><span class="p">:</span> <span class="n">bundle</span><span class="p">)</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+  <span class="k">def</span> <span class="nf">initWithNibName</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="ss">bundle</span><span class="p">:</span> <span class="n">bundle</span><span class="p">)</span>
     <span class="k">super</span>
-    <span class="nb">self</span><span class="o">.</span><span class="n">tabBarItem</span> <span class="o">=</span> <span class="no">UITabBarItem</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithTabBarSystemItem</span><span class="p">(</span><span class="no">UITabBarSystemItemFavorites</span><span class="p">,</span> <span class="n">tag</span><span class="p">:</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="nb">self</span><span class="o">.</span><span class="n">tabBarItem</span> <span class="o">=</span> <span class="no">UITabBarItem</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithTabBarSystemItem</span><span class="p">(</span><span class="no">UITabBarSystemItemFavorites</span><span class="p">,</span> <span class="ss">tag</span><span class="p">:</span> <span class="mi">1</span><span class="p">)</span>
     <span class="nb">self</span>
   <span class="k">end</span>
   <span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p>これは <code>UITabBarItem</code> のための初期化メソッドです。独自の画像やタイトルを利用したい場合には、<code>initWithTitle:image:tag:</code> も使うことができます。独自の画像を利用する場合は、30x30 の黒い透過なアイコンにする必要があります。</p>
 
 <p><code>initWithTabBarSystemItem:</code> はタブのアイコンをデモンストレーションするのを少し楽にしてくれますが、システムで用意されている画像に対応するタイトルが強制的に使用されます(このケースでは、&quot;Favorites&quot;)。</p>
@@ -235,23 +221,21 @@
 <p>なぜ <code>initWithNibName:bundle:</code> のなかで記述しているのでしょう？コントローラのビューが用意されたかどうかにかかわらず、コントローラが用意されたらできるだけ早く <code>tabBarItem</code> を作成したいからです。もし <code>viewDidLoad</code> に記述した場合、アプリが起動したときにすぐに作成できないかもしれません(ユーザによってコントローラに初めてアクセスがあったときに、タブバーコントローラは子のコントローラをロードします)。</p>
 
 <p>One more thing! ほかのタブも作成してみましょう。このタブで行う処理はありませんので、<code>AppDelegate</code> で、異なる背景色で空の <code>UIViewController</code> を作りましょう。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax">  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
-  <span class="n">other_controller</span> <span class="o">=</span> <span class="no">UIViewController</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithNibName</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span> <span class="n">bundle</span><span class="p">:</span> <span class="kp">nil</span><span class="p">)</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+  <span class="n">other_controller</span> <span class="o">=</span> <span class="no">UIViewController</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithNibName</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span> <span class="ss">bundle</span><span class="p">:</span> <span class="kp">nil</span><span class="p">)</span>
   <span class="n">other_controller</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Other&quot;</span>
   <span class="n">other_controller</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">backgroundColor</span> <span class="o">=</span> <span class="no">UIColor</span><span class="o">.</span><span class="n">purpleColor</span>
 
-  <span class="n">tab_controller</span> <span class="o">=</span> <span class="no">UITabBarController</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithNibName</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span> <span class="n">bundle</span><span class="p">:</span> <span class="kp">nil</span><span class="p">)</span>
+  <span class="n">tab_controller</span> <span class="o">=</span> <span class="no">UITabBarController</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithNibName</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span> <span class="ss">bundle</span><span class="p">:</span> <span class="kp">nil</span><span class="p">)</span>
   <span class="n">tab_controller</span><span class="o">.</span><span class="n">viewControllers</span> <span class="o">=</span> <span class="o">[</span><span class="n">nav_controller</span><span class="p">,</span> <span class="n">other_controller</span><span class="o">]</span>
   <span class="vi">@window</span><span class="o">.</span><span class="n">rootViewController</span> <span class="o">=</span> <span class="n">tab_controller</span>
   <span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p><code>rake</code> を実行してできあがり！コンテナコントローラの全容です！これらは全体の一部にすぎませんが、iOS アプリの 80% を構成する積み木はわずかなクラスであることが簡単に分かるでしょう。</p>
 
 <p><img src="images/4.png" alt="multiple tabs"></p>
 
-<h2 id="toc_14">Subway Up</h2>
+<h2 id="toc_3">Subway Up</h2>
 
 <p>私たちがカバーした範囲は、次のことまで広がりました。</p>
 

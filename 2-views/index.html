@@ -103,7 +103,7 @@
         </div>
         <div class="span10" id="content">
           <div id="main">
-            <h1 id="toc_6">Views</h1>
+            <h1 id="toc_0">Views</h1>
 
 <p>プロジェクトを実行することができたので、画面上にものを配置してみましょう。</p>
 
@@ -121,7 +121,7 @@
 <p>アプリケーションの基本となるビューは &quot;window&quot; です。ほかのすべてのビューは window のサブビューか、またはそのサブビュー (またそのサブビュー、そのまた・・・) です。 アプリケーションの window は <code>UIWindow</code> と呼ばれる <code>UIView</code> のサブクラスです。</p>
 
 <p>さぁ、コードを書いてみましょう。<code>AppDelegate</code> の <code>didFinishLaunching</code> メソッドを次のように変更します。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax"><span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="n">application</span><span class="p">,</span> <span class="n">didFinishLaunchingWithOptions</span><span class="ss">:launchOptions</span><span class="p">)</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="n">application</span><span class="p">,</span> <span class="ss">didFinishLaunchingWithOptions</span><span class="p">:</span><span class="n">launchOptions</span><span class="p">)</span>
   <span class="c1"># UIScreen describes the display our app is running on</span>
   <span class="vi">@window</span> <span class="o">=</span> <span class="no">UIWindow</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithFrame</span><span class="p">(</span><span class="no">UIScreen</span><span class="o">.</span><span class="n">mainScreen</span><span class="o">.</span><span class="n">bounds</span><span class="p">)</span>
   <span class="vi">@window</span><span class="o">.</span><span class="n">makeKeyAndVisible</span>
@@ -132,9 +132,7 @@
 
   <span class="kp">true</span>
 <span class="k">end</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p>このコードをたどってみましょう。画面の大きさの <code>UIWindow</code> インスタンスを作成し、<code>makeKeyAndVisible</code> を呼び出しています。これは、基本的に window は 1 つのタッチイベントを受信し画面上に表示される必要があることを OS に指示します。(もし興味があれば複数の画面に複数の window を表示することができますが、ここでは小さな第一歩を刻みましょう)。</p>
 
 <p>window を作成し、それから、window のサブビューとして新しいビューを作成します。ビューの frame には、実際には <code>CGRectMake(x, y, w, h)</code> を使用して作成した <code>CGRect</code> オブジェクトが格納されています。気をつけてください！<code>CGRect</code> は実際には 2 つのオブジェクト <code>CGPoint</code> と <code>CGSize</code> で構成されます。座標 y を参照したい場合には <code>view.frame.position.y</code>、高さを参照したい場合には <code>view.frame.size.height</code> となります。</p>
@@ -148,7 +146,7 @@
 <p><img src="images/1.png" alt="blue box"></p>
 
 <p>もっとボックスを追加して、よりエキサイティングにしましょう！</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax">  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
   <span class="vi">@blue_view</span> <span class="o">=</span> <span class="no">UIView</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithFrame</span><span class="p">(</span><span class="no">CGRectMake</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
   <span class="vi">@blue_view</span><span class="o">.</span><span class="n">backgroundColor</span> <span class="o">=</span> <span class="no">UIColor</span><span class="o">.</span><span class="n">blueColor</span>
   <span class="vi">@window</span><span class="o">.</span><span class="n">addSubview</span><span class="p">(</span><span class="vi">@blue_view</span><span class="p">)</span>
@@ -162,36 +160,30 @@
   <span class="c1"># NOTE: *not* adding to @window</span>
   <span class="vi">@blue_view</span><span class="o">.</span><span class="n">addSubview</span><span class="p">(</span><span class="vi">@red_view</span><span class="p">)</span>
   <span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p>再び <code>rake</code> を実行します。赤いビューが緑のビューよりも下側にあることがわかります。一見、同じ <code>frame</code> にもかかわらず？</p>
 
 <p><img src="images/2.png" alt="more boxes"></p>
 
 <p>おもしろいので、インタラクティブ <code>REPL</code> で遊んでみましょう。<code>rake</code> を実行した Terminal は、シミュレータを開いている間、<code>irb</code> のようなプロンプトが表示されます。さぁ、<code>@blue_view</code> を見つけてみましょう。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax"><span class="o">&gt;</span> <span class="n">delegate</span> <span class="o">=</span> <span class="no">UIApplication</span><span class="o">.</span><span class="n">sharedApplication</span><span class="o">.</span><span class="n">delegate</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="o">&gt;</span> <span class="n">delegate</span> <span class="o">=</span> <span class="no">UIApplication</span><span class="o">.</span><span class="n">sharedApplication</span><span class="o">.</span><span class="n">delegate</span>
 <span class="o">=&gt;</span> <span class="c1">#&lt;AppDelegate&gt;</span>
 <span class="o">&gt;</span> <span class="n">blue_view</span> <span class="o">=</span> <span class="n">delegate</span><span class="o">.</span><span class="n">instance_variable_get</span><span class="p">(</span><span class="s1">&#39;@blue_view&#39;</span><span class="p">)</span>
 <span class="o">=&gt;</span> <span class="c1">#&lt;UIView&gt;</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p>私たちは何をしたのでしょうか？ <code>UIApplication.sharedApplication</code> は、システムがアプリケーションを描画するために使用するオブジェクトを返してくれます。delegate を使用するための設定について以前述べましたが、 <code>.delegate</code> で返されるものはそのオブジェクトです。そのオブジェクトを手に入れれば、ビューを取得するために、便利な <code>instance_variable_get</code> を使うことができます。</p>
 
 <p>ビューがサブビューを 1 つ持っていることを <code>blue_view.subviews.count</code> で確認することができます。<code>red_view</code> を取得して、そのビューを削除してみましょう。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax"><span class="o">&gt;</span> <span class="n">blue_view</span><span class="o">.</span><span class="n">subviews</span><span class="o">.</span><span class="n">count</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="o">&gt;</span> <span class="n">blue_view</span><span class="o">.</span><span class="n">subviews</span><span class="o">.</span><span class="n">count</span>
 <span class="o">=&gt;</span> <span class="mi">1</span>
 <span class="o">&gt;</span> <span class="n">red_view</span> <span class="o">=</span> <span class="n">blue_view</span><span class="o">.</span><span class="n">subviews</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span>
 <span class="o">=&gt;</span> <span class="c1">#&lt;UIView&gt;</span>
 <span class="o">&gt;</span> <span class="n">red_view</span><span class="o">.</span><span class="n">removeFromSuperview</span>
 <span class="o">=&gt;</span> <span class="c1">#&lt;UIView&gt;</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p>ビューは消えました。<code>removeFromSuperview</code> メソッドは、自身のビューを画面から削除します。そして、red_view は親のビューの <code>subviews</code> でした (再び <code>blue_view.subviews.count</code> を実行することで確認できます)。</p>
 
-<h2 id="toc_7">Wrap Up</h2>
+<h2 id="toc_1">Wrap Up</h2>
 
 <p>この例はそれほど長くはありませんでしたが、ビューの核となるコンセプト、ビューには frame とサブビューがあることを説明しました。例ではシンプルでしたが、実際にアプリケーションを作成するとはるかに複雑になります。したがって、私たちはそれらを対処するためにより良い基盤が必要です。</p>
 

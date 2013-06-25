@@ -103,9 +103,9 @@
         </div>
         <div class="span10" id="content">
           <div id="main">
-            <h1 id="toc_3">Hello Motion</h1>
+            <h1 id="toc_0">Hello Motion</h1>
 
-<h2 id="toc_4">Installation</h2>
+<h2 id="toc_1">Installation</h2>
 
 <p><a href="http://www.rubymotion.com/">RubyMotion</a> は <a href="http://macruby.org/">MacRuby</a> の開発を指揮してきた方が設立した HipByte 社の商用製品です。<a href="http://sites.fastspring.com/hipbyte/product/rubymotion">ライセンス購入</a> の際には、ライセンスキーとインストーラアプリケーションを受け取ります。Mac App Store から、Xcode を入手することも必要となります。Xcode は RubyMotion で必要となるいくつかの開発ツール (たとえば iOS シミュレータなど) をインストールします。実際には、Xcode IDE で RubyMotion プロジェクトを作成することはありません。</p>
 
@@ -113,13 +113,11 @@
 
 <p>インストールが完了すれば、RubyMotion の世界へダイブできます。</p>
 
-<h2 id="toc_5">The First App</h2>
+<h2 id="toc_2">The First App</h2>
 
 <p>Terminal を起動し、RubyMotion プロジェクトを作成する場所へ移動します。次のコマンドを実行します。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax"><span class="n">motion</span> <span class="n">create</span> <span class="no">HelloMotion</span>
-</code></pre>
-</div>
-
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="n">motion</span> <span class="n">create</span> <span class="no">HelloMotion</span>
+</code></pre></div>
 <p><code>motion</code> は RubyMotion で使用する 2 つのコマンドの 1 つです。もしみなさんが Rails になじみがあれば、<code>motion</code> は <code>rails</code> コマンドに相当します。そのコマンドはプロジェクトや、RubyMotion ツール自体の管理を行います (ときどき、<code>motion update</code> を実行することを思い出させてくれます) 。</p>
 
 <p><code>motion create</code> によって、<code>HelloMotion</code> フォルダと、いくつかのファイルがフォルダ内に作られます。<code>cd</code> でフォルダ内へ進みましょう (<code>cd ./HelloMotion</code>)。このフォルダ内で引き続きコマンドを実行することになるので、Terminal のウィンドウやタブをキープしておきましょう。</p>
@@ -127,16 +125,14 @@
 <p>作成される 2 つのファイル <code>Rakefile</code> と <code>./app/app_delegate.rb</code> について説明します。</p>
 
 <p><code>Rakefile</code> はみなさんのアプリケーションの設定 (アプリケーションの名前やどのようなリソースファイルが含まれるかなど) と、ライブラリの導入 (サードパーティの gem やそのほかのローカルのソースファイル) を扱うファイルです。<code>Rakefile</code> は RubyMotion ワークフローの残りの 1 つ <code>rake</code> コマンドで使用されます。RubyMotion 1.11 において、<code>Rakefile</code> は次のように生成されます。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax"><span class="vg">$:</span><span class="o">.</span><span class="n">unshift</span><span class="p">(</span><span class="s2">&quot;/Library/RubyMotion/lib&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="vg">$:</span><span class="o">.</span><span class="n">unshift</span><span class="p">(</span><span class="s2">&quot;/Library/RubyMotion/lib&quot;</span><span class="p">)</span>
 <span class="nb">require</span> <span class="s1">&#39;motion/project&#39;</span>
 
-<span class="no">Motion</span><span class="o">::</span><span class="no">Project</span><span class="o">::</span><span class="no">App</span><span class="o">.</span><span class="n">setup</span> <span class="k">do</span> <span class="o">|</span><span class="n">app</span><span class="o">|</span>
+<span class="ss">Motion</span><span class="p">:</span><span class="ss">:Project</span><span class="o">::</span><span class="no">App</span><span class="o">.</span><span class="n">setup</span> <span class="k">do</span> <span class="o">|</span><span class="n">app</span><span class="o">|</span>
   <span class="c1"># Use `rake config&#39; to see complete project settings.</span>
   <span class="n">app</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;HelloMotion&#39;</span>
 <span class="k">end</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p>もしみなさんが Ruby にあまりなじみが無いのでしたら、「<code>$.unshift</code> とは何者だろうか？」と戸惑うかもしれません。「<code>require</code> を使用するときに、必要に応じて &#39;/Library/RubyMotion/lib&#39; からもライブラリを探すように」とこの行で Ruby に指示しています。&#39;motion/project&#39; はそのディレクトリに存在し、<code>$.unshift</code> がなければ見つけることができません。</p>
 
 <p><code>require &#39;motion/project&#39;</code> は RubyMotion で適切にアクセスが行われ、<code>.setup</code> ブロックでアプリケーションの設定が行えるようになります。<code>rake config</code> によってリストアップされる項目として、<code>app</code> で設定できるすべてのプロパティを確認できます。デフォルトでは、RubyMotion は <code>.name</code> にプロジェクト名を設定します。</p>
@@ -150,31 +146,25 @@
 <p>「やったぜ！」とあなたは歓喜するかもしれませんね。しかし、どのようなことが行われたのでしょうか？ <code>app.name = &#39;HelloMotion&#39;</code> からどのようにして、iPhone のポップアップを得たのでしょうか？</p>
 
 <p>RubyMotion の <code>App</code> はいくつかデフォルトのコード、たとえば (最も重要なのは) <code>./app</code> 内のすべての Ruby ファイルを再帰的に保有していることがわかります。最初のほうで <code>app_delegate.rb</code> について言及したことを覚えているでしょうか？アプリケーションをコンパイルしたときに、そのファイルも含まれていることがわかりますね。さぁ、見てみよう！</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax"><span class="k">class</span> <span class="nc">AppDelegate</span>
-  <span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="n">application</span><span class="p">,</span> <span class="n">didFinishLaunchingWithOptions</span><span class="ss">:launchOptions</span><span class="p">)</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">AppDelegate</span>
+  <span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="n">application</span><span class="p">,</span> <span class="ss">didFinishLaunchingWithOptions</span><span class="p">:</span><span class="n">launchOptions</span><span class="p">)</span>
     <span class="kp">true</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p>う〜ん、1 つのメソッドが <code>AppDelegate</code> クラスで定義されているだけです。スーパークラスさえ書かれていません。これは何をどのようにするのでしょうか？</p>
 
 <p>手っ取り早く、<code>rake config</code> コマンドを実行してみましょう。いくつかの情報を出力しますが、私たちの関心があることは次の内容です。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax"><span class="o">.</span><span class="n">.</span><span class="o">.</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="o">.</span><span class="n">.</span><span class="o">.</span>
 <span class="n">delegate_class</span>         <span class="p">:</span> <span class="s2">&quot;AppDelegate&quot;</span>
 <span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p>なんてこともない。AppDelegate と書かれていますね！ RubyMotion は <code>delegate_class</code> に割り当てられた名前のクラスを探し、アプリを起動するときに利用します。<code>SuperAppDelegate</code> というクラスが呼ばれるようにする場合には、<code>Rakefile</code> を次のものに変更します。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax"><span class="no">Motion</span><span class="o">::</span><span class="no">Project</span><span class="o">::</span><span class="no">App</span><span class="o">.</span><span class="n">setup</span> <span class="k">do</span> <span class="o">|</span><span class="n">app</span><span class="o">|</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="ss">Motion</span><span class="p">:</span><span class="ss">:Project</span><span class="o">::</span><span class="no">App</span><span class="o">.</span><span class="n">setup</span> <span class="k">do</span> <span class="o">|</span><span class="n">app</span><span class="o">|</span>
   <span class="n">app</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;HelloMotion&#39;</span>
   <span class="n">app</span><span class="o">.</span><span class="n">delegate_class</span> <span class="o">=</span> <span class="s2">&quot;SuperAppDelegate&quot;</span>
 <span class="k">end</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p>それで、、、delegate とは何でしょう？ iOS の世界では、ユーザが私たちのアプリケーションを起動したときに、システムはいろいろなものをセットアップします。私たちは処理中にいろいろなイベントに対応できるオブジェクトを OS に与える必要があります。私たちは &quot;application delegate&quot; として、オブジェクトを参照します。アプリケーションの開始・終了、アプリケーションがバックグラウンドになったとき、Push Notification や、すべてのおもしろそうなものを受信したときに、そのオブジェクトはコールバックを受けます。</p>
 
 <p><code>motion</code> コマンドで生成されるコードは、<code>def application(application, didFinishLaunchingWithOptions: launchOptions)</code> だけを実装します。それは、通常の Ruby のコードとは少々おもむきが異なっています。なぜなら、<code>didFinishLaunchingWithOptions</code> というラベルが途中にあります。それは何でしょう？さて、ちょっとした歴史の授業の時間です。</p>
@@ -185,16 +175,14 @@
 、<code>obj.makeBox(origin, andSize: size)</code> のように Apple オリジナルの API と非常に互換性がある「名前付き引数」の実装が追加されています。<code>andSize</code> はお世辞でもなく、本当にメソッド名の一部です。<code>obj.call_method(var1, withParam: var2)</code> と <code>obj.call_method(var1, withMagic: var2)</code> は、<code>obj.call_method</code> が 通常の Ruby のような形式にもかかわらず、まったく異なります。</p>
 
 <p>それでは、話を戻しましょう。システムがアプリケーションのセットアップを終了し、私たちによるセットアップを実行する準備が整ったときに、<code>application:didFinishLaunchingWithOptions:</code> が呼ばれます。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax"><span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="n">application</span><span class="p">,</span> <span class="n">didFinishLaunchingWithOptions</span><span class="ss">:launchOptions</span><span class="p">)</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="n">application</span><span class="p">,</span> <span class="ss">didFinishLaunchingWithOptions</span><span class="p">:</span><span class="n">launchOptions</span><span class="p">)</span>
   <span class="kp">true</span>
 <span class="k">end</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p>今のところ、いつも <code>true</code> を返すことを前提としています。いくつかのアプリケーションは <code>launchOptions</code> をアプリケーションを起動させるかどうかを決定するために使用するかもしれませんが、ほとんど不要でしょう。</p>
 
 <p>さて、アプリケーションが起動する仕組みと、エントリーポイントがわかりました。何かしてみましょうか？ <code>application:didFinishLaunchingWithOptions:</code> を次のように変更してみましょう。</p>
-<div class="highlight"><pre class='codehilite'><code class="ruby syntax"><span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="n">application</span><span class="p">,</span> <span class="n">didFinishLaunchingWithOptions</span><span class="ss">:launchOptions</span><span class="p">)</span>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="n">application</span><span class="p">,</span> <span class="ss">didFinishLaunchingWithOptions</span><span class="p">:</span><span class="n">launchOptions</span><span class="p">)</span>
   <span class="n">alert</span> <span class="o">=</span> <span class="no">UIAlertView</span><span class="o">.</span><span class="n">new</span>
   <span class="n">alert</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;Hello Motion!&quot;</span>
   <span class="n">alert</span><span class="o">.</span><span class="n">show</span>
@@ -203,9 +191,7 @@
 
   <span class="kp">true</span>
 <span class="k">end</span>
-</code></pre>
-</div>
-
+</code></pre></div>
 <p>何が増えたでしょう？まず、<code>UIAlertView</code> について 3 行あります。<code>UIAlertView</code> は、みなさんが iOS を利用しているときに時々見かける (iTunes Store にログインするときや、iOS 5 以前の Push Notification など) 青いポップアップです。私たちはそれを作成し、メッセージを与え、そしてそれを表示します。</p>
 
 <p>次に、<code>puts</code> は基本的なログを表示するものです。普通の文字列や、情報が欲しいオブジェクトを表示するために、それに渡すことができます。</p>
