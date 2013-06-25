@@ -2,7 +2,7 @@ task :deploy do
   system 'git checkout japanese'
   system 'rm -rf ./_site'
   system 'mkdir _site'
-  system 'jekyll'
+  system 'jekyll build'
   system 'rm -rf ../_site'
   system 'cp -r ./_site ../_site'
   system 'git checkout gh-pages'
