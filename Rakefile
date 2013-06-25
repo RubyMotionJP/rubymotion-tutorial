@@ -20,7 +20,7 @@ task :deploy do
   msg = `git status`
   system 'git add .'
   system "git commit -m 'Sync gh-pages \n #{msg}'"
-  # system 'git push origin gh-pages'
-  # system 'git checkout japanese'
-  # system 'rm -rf ../_site'
+  system 'git push origin gh-pages'
+  system 'git checkout japanese'
+  system 'rm -rf ../_site'
 end
