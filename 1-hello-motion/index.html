@@ -133,7 +133,7 @@
   <span class="n">app</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;HelloMotion&#39;</span>
 <span class="k">end</span>
 </code></pre></div>
-<p>もしみなさんが Ruby にあまりなじみが無いのでしたら、「<code>$.unshift</code> とは何者だろうか？」と戸惑うかもしれません。「<code>require</code> を使用するときに、必要に応じて &#39;/Library/RubyMotion/lib&#39; からもライブラリを探すように」とこの行で Ruby に指示しています。&#39;motion/project&#39; はそのディレクトリに存在し、<code>$.unshift</code> がなければ見つけることができません。</p>
+<p>もしみなさんが Ruby にあまりなじみが無いのでしたら、「<code>$:.unshift</code> とは何者だろうか？」と戸惑うかもしれません。「<code>require</code> を使用するときに、必要に応じて &#39;/Library/RubyMotion/lib&#39; からもライブラリを探すように」とこの行で Ruby に指示しています。&#39;motion/project&#39; はそのディレクトリに存在し、<code>$:.unshift</code> がなければ見つけることができません。</p>
 
 <p><code>require &#39;motion/project&#39;</code> は RubyMotion で適切にアクセスが行われ、<code>.setup</code> ブロックでアプリケーションの設定が行えるようになります。<code>rake config</code> によってリストアップされる項目として、<code>app</code> で設定できるすべてのプロパティを確認できます。デフォルトでは、RubyMotion は <code>.name</code> にプロジェクト名を設定します。</p>
 
