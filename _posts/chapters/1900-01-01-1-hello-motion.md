@@ -41,7 +41,7 @@ Motion::Project::App.setup do |app|
 end
 ```
 
-もしみなさんが Ruby にあまりなじみが無いのでしたら、「`$.unshift` とは何者だろうか？」と戸惑うかもしれません。「`require` を使用するときに、必要に応じて '/Library/RubyMotion/lib' からもライブラリを探すように」とこの行で Ruby に指示しています。'motion/project' はそのディレクトリに存在し、`$.unshift` がなければ見つけることができません。
+もしみなさんが Ruby にあまりなじみが無いのでしたら、「`$:.unshift` とは何者だろうか？」と戸惑うかもしれません。「`require` を使用するときに、必要に応じて '/Library/RubyMotion/lib' からもライブラリを探すように」とこの行で Ruby に指示しています。'motion/project' はそのディレクトリに存在し、`$:.unshift` がなければ見つけることができません。
 
 `require 'motion/project'` は RubyMotion で適切にアクセスが行われ、`.setup` ブロックでアプリケーションの設定が行えるようになります。`rake config` によってリストアップされる項目として、`app` で設定できるすべてのプロパティを確認できます。デフォルトでは、RubyMotion は `.name` にプロジェクト名を設定します。
 
