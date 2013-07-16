@@ -148,7 +148,7 @@
 </code></pre></div>
 <p>このコードには新しく登場したものが 2 つあります。最初に、<code>[[0, 0], [100, 100]]</code> という構文は <code>frame</code> のためのものです。入れ子にした配列はこれまで使ってきた <code>CGRectMake</code> を簡略化したものです。最初の配列は <code>origin</code> の値を表し、二つ目の配列は <code>size</code> の値を表しています。<code>frame</code> を変更するために <code>@points</code> を簡単に使用することができ、素晴らしいことです。</p>
 
-<p>二つ目は <code>lambda</code> です。もしこの用語を慣れていなければ、<code>lambda</code> は伝統的に小さな関数で変数が割り当てられたり引数が渡されたりするものです。たとえば、<code>my_lambda = lambda { p &quot;Hello!&quot; }</code> とすることができます。ここで <code>my_lambda.call</code> を実行すると、<code>lambda</code> ブロック内のコードが実行されます。<code>lambda</code> は引数を持つこともできます。</p>
+<p>二つ目は <code>lambda</code> です。この用語に慣れていない人向けに説明すると、<code>lambda</code> は変数が割り当てられたり引数が渡されたりする関数です。たとえば、<code>my_lambda = lambda { p &quot;Hello!&quot; }</code> とすることができます。ここで <code>my_lambda.call</code> を実行すると、<code>lambda</code> ブロック内のコードが実行されます。<code>lambda</code> は引数を持つこともできます。</p>
 <div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="n">my_lambda</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="o">|</span><span class="nb">name</span><span class="o">|</span> <span class="nb">p</span> <span class="s2">&quot;Hello </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">!&quot;</span> <span class="p">}</span>
 <span class="n">my_lambda</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="s2">&quot;Clay&quot;</span><span class="p">)</span>
 <span class="o">=&gt;</span> <span class="no">Hello</span> <span class="no">Clay</span>
@@ -157,9 +157,9 @@
 
 <p><code>UIView.animateWithDuration:animations:completion:</code> はアニメーションを制御するものです。たくさんのパーツがこのメソッドにあるので、ひとつずつ見ていきましょう。</p>
 
-<p><code>duration</code> にはアニメーションをどのくらい継続するかを秒単位で設定します。<code>1.85</code> のように float の値を使うこともできます。指にとって良いルールは &quot;素早い&quot; アニメーションは <code>.3</code> 秒にされることです。</p>
+<p><code>duration</code> にはアニメーションをどのくらい継続するかを秒単位で設定します。<code>1.85</code> のように float の値を使うこともできます。大まかには &quot;素早い&quot; アニメーションは <code>.3</code> 秒にするとよいです。</p>
 
-<p><em>任意の</em> ビューに対して <code>animations:</code> の lambda で行った変更がスムーズにアニメーションされます。なんてクールなんでしょう！？Android と比較すると、Android では望むアニメーションのために各プロパティの独自の <code>Animation</code> オブジェクトを作成する必要があります。さて、いくつかのプロパティはアニメーションできませんが、<code>frame</code>, <code>bounds</code> や <code>alpha</code> といった一般的なものは問題なく動きます (完全なリスト <a href="http://developer.apple.com/library/ios/#documentation/uikit/reference/uiview_class/uiview/uiview.html#Overview_section">this</a> をチェックしてください)。私たちの場合では、<code>@view.frame</code> の値を <code>@points</code> で用意してある次の origin に設定します。</p>
+<p><em>任意の</em> ビューに対して <code>animations:</code> の lambda で行った変更がスムーズにアニメーションされます。なんてクールなんでしょう！？Android と比較すると、Android では望むアニメーションのために各プロパティの独自の <code>Animation</code> オブジェクトを作成する必要があります。さて、いくつかのプロパティはアニメーションできませんが、<code>frame</code>, <code>bounds</code> や <code>alpha</code> といった一般的なものは問題なく動きます (完全なリストを見たければ、 <a href="http://developer.apple.com/library/ios/#documentation/uikit/reference/uiview_class/uiview/uiview.html#Overview_section">こちら</a> をチェックしてください)。私たちの場合では、<code>@view.frame</code> の値を <code>@points</code> で用意してある次の origin に設定します。</p>
 
 <p>最後に、<code>completions:</code> はアニメーションが終了した後で呼び出されます。この lambda では <em>必ず</em> 引数を受け付ける必要があります。アニメーションが本当に終了したかを通知する <code>boolean</code> の値になります。他のアニメーションを明示的に行う場合にのみ、それによってアニメーションが取り消されるため、アニメーションは失敗となることがあります。</p>
 
@@ -167,7 +167,7 @@
 
 <p><img src="images/1.png" alt="simple box animations"></p>
 
-<p>私はこんなに簡単であったという衝撃を忘れることができません。さきほどのアニメーションに 1) delay を持たせる 2) 別の &quot;アニメーションカーブ&quot; を持たせる、と変更することでスパイスを振りかけましょう。慣れていない？現在のアニメーションを見てみましょう。各ポイントの間で、ボックスがスピードアップしスローダウンのしかたに気がつきました？詳しく見てみましょう。</p>
+<p>私はこんなに簡単であったという衝撃を忘れることができません。さきほどのアニメーションに 1) delay を持たせる 2) 別の &quot;アニメーションカーブ&quot; を持たせる、と変更することでスパイスを振りかけましょう。慣れていない？現在のアニメーションを見てみましょう。各ポイントの間で、ボックスがどのくらいスピードアップしスローダウンしているかわかりますか？もっと近くで見てください。必ず分かるはずです。</p>
 
 <p>この動きになる理由は、iOS のデフォルトのアニメーションカーブが <code>UIViewAnimationOptionCurveEaseInOut</code> だからです。実際の生活のなかで頻繁におこる動き方をシミュレートしていて本当に素晴らしいエフェクトです。私たちは素早く方向転換しませんし、徐々にスピードをあげます。いろいろ遊ぶために、別のカーブを使ってみましょう。</p>
 

@@ -111,7 +111,7 @@
 
 <p>それでは、コントローラとは何でしょうか？コントローラはモデルとビューの間の層として動作するオブジェクトで、ユーザからのイベントに応答しモデルの変更やビューの更新を行います。とても良く書かれたコードでは、ボタンをタップしたときに、コントローラはイベントを奪い、データのプロパティを更新し、新しいデータを反映するためにビューを変更します。</p>
 
-<p>「全体像」の類いように聞こえますが、コントローラにはいくつか本当に実用的なことがあります。</p>
+<p>「全体像」の類いのように聞こえますが、コントローラにはいくつか本当に実用的なことがあります。</p>
 
 <ul>
 <li><strong>ビューの再利用</strong>. 投稿に関する情報 <code>Post</code> (投稿内容、投稿者、&quot;Likes&quot; など) をすべて表示する <code>PostView</code> を考えてみましょう。メインのフィードやユーザプロフィールフィードなど、異なる画面でこのビューを使用したいです。ビューを再利用できるように維持するため、<code>PostView</code> は情報を取得する方法を扱うべきではありません。その代わり、コントローラでそれを処理し、処理されたデータをビューへ渡すべきです。</li>
@@ -120,9 +120,9 @@
 
 <p>MVC についてモデルとビューで技術的に難しいことはありません。もしみなさんが MVC を採用すれば、より強固で管理が容易なコードとなることでしょう。</p>
 
-<p>iOS の世界では、コントローラは <code>UIViewController</code> です。<code>UIViewController</code> には 1 つの <code>view</code> プロパティとビューのライフサイクルのようなことを対処するためのメソッドがあり、またデバイスの向きの変更 (横向きから縦向きへ変更など) を対処します。心配しないでください、私たちはすぐにビジネスライフサイクルを得るでしょう。</p>
+<p>iOS の世界では、コントローラは <code>UIViewController</code> です。<code>UIViewController</code> には 1 つの <code>view</code> プロパティとビューのライフサイクルのようなことを対処するためのメソッドがあり、またデバイスの向きの変更 (横向きから縦向きへ変更など) を対処します。焦らないでください、私たちはすぐにそのライフサイクルに取りかかります。</p>
 
-<p>コントローラが何か、それがすべきことが何かを知りました。では、何を*すべきではない*のでしょう？</p>
+<p>コントローラが何か、それがすべきことが何かを知りました。では、何を <em>すべきではない</em> のでしょう？</p>
 
 <ul>
 <li>データを直接参照したり、保存すること。コントローラで HTTP リクエストを送信することは魅力的ですが、これらはモデルで行うのがベストです。</li>
@@ -142,9 +142,9 @@
   <span class="k">end</span>
 <span class="k">end</span>
 </code></pre></div>
-<p><code>viewDidLoad</code> は <code>UIViewController</code> のライフサイクルを形作るメソッドの 1 つで、<code>self.view</code> で示されるビューが作成され、追加されたサブビューが利用できるようになると呼び出されます。今日のところは、赤い背景色のビューとしておきましょう。</p>
+<p><code>viewDidLoad</code> は <code>UIViewController</code> のライフサイクルを形作るメソッドの 1 つで、<code>self.view</code> で示されるビューが作成され、サブビューが追加できるようになると呼び出されます。今日のところは、赤い背景色のビューとしておきましょう。</p>
 
-<p>皆さんは、絶対に、疑うこと無く、<code>viewDidLoad</code> で <code>super</code> を呼び出す必要があります。そうでなければ、良くないことが起こるでしょう。分かりました？</p>
+<p>皆さんは、絶対、問答無用に <code>viewDidLoad</code> で <code>super</code> を呼び出す必要があります。そうでなければ、良くないことが起こるでしょう。分かりました？</p>
 
 <p>さて、<code>AppDelegate</code> へ戻り、以前の <code>UIView</code> のコードを削除しましょう。私たちは 1 行追加する必要があり、次のようになります。</p>
 <div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">AppDelegate</span>
@@ -159,7 +159,7 @@
   <span class="k">end</span>
 <span class="k">end</span>
 </code></pre></div>
-<p><code>rootViewController=</code> の呼び出しが分かりますか？ window が与えられた <code>UIViewController</code> を受け取り、window にフィットするように <code>view</code> のサイズを調整します。これは、window をセットアップするための良い方法です(<code>window.addSubview</code> とは対照的に)。</p>
+<p><code>rootViewController=</code> の呼び出しが分かりますか？ window が先ほど定義された <code>UIViewController</code> を受け取り、window にフィットするようにその <code>view</code> のサイズを調整します。これは、window をセットアップするための良い方法です(<code>window.addSubview</code> とは対照的に)。</p>
 
 <p>追加した行でほかに新しい部分は <code>initWithNibName:bundle:</code> です。一般的に、これは <code>NIB</code> ファイルからコントローラを読み込むために使われます。<code>NIB</code> は Xcode の Interface Builder を使うことで作られます。私たちのコントローラのためには Interface Builder を使っていないので、2 つの引数の両方に nil を渡すことができます。</p>
 

@@ -111,7 +111,7 @@
 
 <p><img src="images/table_view.png" alt="UITableView"></p>
 
-<p><code>UITableView</code> はプレゼンテーションと似ていて、スクロールするコンテンツを構築します。<code>UITableView</code> は非常にたくさんのアイテムを持つことができます。ごく少数から非常に大量のアイテムまでスケールする秘訣は、実行時点で固定された一定のサブビューをメモリで使用するからです。複雑そうなので、細かく見ていきましょう。</p>
+<p><code>UITableView</code> はプレゼンテーションと似ていて、スクロールするコンテンツを構築します。<code>UITableView</code> は非常にたくさんのアイテムを持つことができます。ごく少数から非常に大量のアイテムまでスケールする秘訣は、常に決められた一定数のサブビューのみをメモリで使用するからです。複雑そうなので、細かく見ていきましょう。</p>
 
 <p>Mail.app で、みなさんは受信トレイに何百通もメールがある可能性がありますが、画面上にはその一部 (6 通くらい) しか表示されません。スクロールすると、一番上のメールはゆっくりと画面外へ移動します。テーブルビューは隠れてしまったこれらのビューを持ち、そして画面の <em>反対側</em> の端へそれらを移動します。画面の上部を移動したこれらのメッセージビューは、画面の下部に再配置されます。そして配置された新しい位置に適したデータで内容が置き換えられます。テーブルビューは信じられないほど高速にそれらの行を移動します。そのため、テーブルに数百ものアイテムがあったとしても、ひとにぎりの行のビューがメモリに保持されているだけとなります。</p>
 
@@ -207,7 +207,7 @@
 </code></pre></div>
 <p>すべての大文字アルファベットが含まれた配列が作成されます。すばらしい、そうでしょ？</p>
 
-<p>私たちは 2 つの data source メソッドを実装する必要があります。<code>numberOfRowsInSection:</code> は、すべてのデータで <code>@data</code> を使っているのでかなり単純です。</p>
+<p>私たちは 2 つの data source メソッドを実装する必要があります。<code>numberOfRowsInSection:</code> は、<code>@data</code> を使うことしかしていないのでかなり単純です。</p>
 <div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">tableView</span><span class="p">(</span><span class="n">tableView</span><span class="p">,</span> <span class="ss">numberOfRowsInSection</span><span class="p">:</span> <span class="n">section</span><span class="p">)</span>
   <span class="vi">@data</span><span class="o">.</span><span class="n">count</span>
 <span class="k">end</span>
