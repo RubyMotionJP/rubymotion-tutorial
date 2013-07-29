@@ -105,15 +105,15 @@
           <div id="main">
             <h1 id="toc_0">Testing</h1>
 
-<p>これまで取り上げてきたすべてのものは、Objective-C と Ruby のごく一般的なものでした。もちろん両者は構文が異なり、Ruby と Objective-C のメリットについて主張できることでしょう。しかし、これまで扱ってきたものは通常の iOS のツールを使用していて同等のパフォーマンスを発揮します。それでは、RubyMotion 独自のものについて紹介しましょう。</p>
+<p>これまで取り上げてきたすべてのものは、Objective-C と Ruby のごく一般的なものでした。もちろん両者は構文が異なり、Ruby と Objective-C それぞれのメリットについて一日中論争できることでしょう。しかし、これまで扱ってきたものは通常の iOS のツールを使用しており、パフォーマンスについては同等です。それでは、RubyMotion 独自のものについて紹介しましょう。</p>
 
-<p>自動テストは本当に最高なものです。ここでは私は押し売りはしませんが(私よりもそれに見合う大勢の方々がいます)、疑う余地がないコードの整合性を検証するテストを記述するよりもソフトウェア製品を構築する作業を行う方が生産的でしょう(いつも起こることではないですが、良い考えでしょう)。もし将来あるいは現在に何かが壊れている場合、すぐにそれを知ることができます。それはどのくらいクールでしょう？</p>
+<p>自動テストは本当に最高なものです。ここでは私は押し売りはしませんが(私よりもそれにふさわしい方々がいます)、ソフトウェアを構築する際に、テストを書いて疑う余地なくコードの整合性を検証することはかなり生産的でしょう(常にそうではないですが、良い考えでしょう)。もし将来あるいは現在に何かが壊れている場合、すぐにそれを知ることができます。それはなんてクールなことでしょうか？</p>
 
-<p>テストすることは素晴らしい考えだとみなさん賛成しますが、実際にテストを記述するときに多くのエンジニアは当然のことながら躊躇します。それには魅力的な機能も計測可能なパフォーマンス向上もありません。将来への保証です。とりわけ短期的なプロジェクトでは、テストにおける工数はもっともインパクトのないものと簡単に言えます。</p>
+<p>テストすることは素晴らしい考えだとみなさん賛成しますが、実際にテストを記述するときに多くのエンジニアは当然のことながら躊躇します。それには魅力的な機能も計測可能なパフォーマンス向上もありません。将来への保証です。とりわけ短期的なプロジェクトでは、テストにおける工数はもっともインパクトのないものと言うのは簡単です。</p>
 
-<p>そこで、私たちには何が行えるでしょう？簡単にテストを実行でき、できるだけ途切れずにテストを記述します。</p>
+<p>さてどうしましょうか？できるだけ簡単に、途切れずに書けるようなテスト環境を作るのです。</p>
 
-<p>Ruby コミュニティーにはテストの文化が根付いており、プログラマーのオーバーヘッドがごくわずかな、いくつか非常に簡潔なテストプラクティスが作成されています。対照的に、Objective-C で書かれた iOS アプリのテストの自動化を行う Apple の方法は JavaScript の記述が伴います。Objective-C でテストを記述することができるサードパーティのライブラリもありますが、正直、RubyMotion のテストフレームワークはそれらをとても驚かせるものでしょう。</p>
+<p>Ruby コミュニティーにはテストの文化が根付いており、プログラマーのオーバーヘッドがごくわずかな、非常に簡潔なテストプラクティスが確立されています。対照的に、Apple による Objective-C で書かれた iOS アプリのテスト自動化手法は JavaScript の記述を必要とします。Objective-C でテストを記述することができるサードパーティのライブラリもありますが、正直、RubyMotion のテストフレームワークはそれらをとても驚かせるものでしょう。</p>
 
 <p>どれだけ簡単なのか見てみましょう。</p>
 
@@ -166,15 +166,15 @@
 
 <p>今まさに、みなさんはバグを修正するために自動化されたテストをもちいました。</p>
 
-<p>それはオブジェクトのプロパティの動作をテストする方法の要点です。特定のものが存在するか、または属性と等しいかをチェックするのに非常に便利です。ただ、イベントを引き起こすために、おそらく多くの特定の機能や内部機能を呼び出す必要があります。たとえば、タップしたばかりのボタンの属性が変更変更されたかを確認したい場合には、手動でボタンのコールバックを起動する必要があります。よりよい方法があったら、、、</p>
+<p>それはオブジェクトのプロパティの動作をテストする方法の要点です。特定のものが存在するか、または属性と等しいかをチェックするのに非常に便利です。ただ、イベントを引き起こすために、おそらく多くの特定の機能や内部機能を呼び出す必要があります。たとえば、タップしたばかりのボタンの属性が変更されたかを確認したい場合には、手動でボタンのコールバックを起動する必要があります。よりよい方法があったなら、、、</p>
 
 <h2 id="toc_2">Functional Testing</h2>
 
-<p>実はそれはあります。RubyMotion もまた、タップやスワイプのような UI イベントを引き起こすものや副作用を調査する 機能テストについて素晴らしいサポートがあります。<code>button.callback.call</code> のように何かをする代わりに、<code>tap button</code> を使うことができます。すばらしいでしょ？</p>
+<p>実はそれはあります。RubyMotion もまた、タップやスワイプのような UI イベントを引き起こして、その副作用を調査する機能テストについて素晴らしいサポートをしています。<code>button.callback.call</code> のように何かをする代わりに、<code>tap button</code> を使うことができます。すばらしいでしょ？</p>
 
-<p>これら機能テストは素晴らしいものですが、1 つの <code>UIViewController</code> の一部をテストすることを意図しており、新しいコントローラを押したり引いたりしません。</p>
+<p>これら機能テストは素晴らしいものですが、単一の <code>UIViewController</code> をテストすることを意図しており、複数のコントローラを使うことはしません。</p>
 
-<p>これを動作させるために、新しい <code>UIViewController</code> のサブクラスがはじめに必要となります。<code>./app/ButtonController.rb</code> を作成し、次のようにボタンとコールバックを用意します。</p>
+<p>これを動作させるために、はじめに新しい <code>UIViewController</code> のサブクラスが必要となります。<code>./app/ButtonController.rb</code> を作成し、次のようにボタンとコールバックを用意します。</p>
 <div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">ButtonController</span> <span class="o">&lt;</span> <span class="no">UIViewController</span>
   <span class="k">def</span> <span class="nf">viewDidLoad</span>
     <span class="k">super</span>
@@ -198,7 +198,7 @@
 
 <p><code>accessibilityLabel</code> はそれぞれの <code>UIView</code> で利用できる文字列を扱うプロパティです。デバイスの VoiceOver 機能を利用する際にオペレーティングシステムによって読み上げられるテキストとして使用されます (それなので、余計なもので埋めないでください)。なぜ、今これを導入するのでしょう？ RubyMotion の機能テストは <code>accessibilityLabel</code> をもとにビューを探します。メモリ上のどこかに存在するだけでなく、確実にテストするビューが階層へ追加されます。</p>
 
-<p>最後に、<code>AppDelegate</code> でコントローラをウィンドウに接続する必要があります。</p>
+<p>最後に、<code>AppDelegate</code> でコントローラをウィンドウに関連づける必要があります。</p>
 <div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="n">application</span><span class="p">,</span> <span class="ss">didFinishLaunchingWithOptions</span><span class="p">:</span><span class="n">launchOptions</span><span class="p">)</span>
   <span class="vi">@window</span> <span class="o">=</span> <span class="no">UIWindow</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithFrame</span><span class="p">(</span><span class="no">UIScreen</span><span class="o">.</span><span class="n">mainScreen</span><span class="o">.</span><span class="n">applicationFrame</span><span class="p">)</span>
   <span class="vi">@window</span><span class="o">.</span><span class="n">makeKeyAndVisible</span>
@@ -223,9 +223,9 @@
 </code></pre></div>
 <p>いいね！私たちは新しい遊び道具を手に入れたようです。</p>
 
-<p><code>tests &lt;class&gt;</code> は <code>describe</code> と指定された <code>UIViewController</code> のクラスと結びつけます。これは、<code>UIWindow</code> とテストするコントローラをインスタンス化します。テスト内でウィンドウとコントローラのそれぞれ <code>self.window</code> と <code>self.controller</code> でアクセスすることができます。これはテストの手順を壊してしまうような、余計な UI やステートが無い状況を保証してくれます。</p>
+<p><code>tests &lt;class&gt;</code> は <code>describe</code> と指定された <code>UIViewController</code> のクラスを結びつけます。これは、<code>UIWindow</code> とテストするコントローラをインスタンス化します。テスト内でウィンドウとコントローラにそれぞれ <code>self.window</code> と <code>self.controller</code> でアクセスすることができます。これはテストの手続きを壊してしまうような、余計な UI やステートが無い状況を保証してくれます。</p>
 
-<p>コントローラをテストするために Spec を用意し、<code>it</code> ブロックでアサーションを行います。もう一つの新しいおもちゃは <code>tap</code> です。 <code>tap</code> は最初の引数として <code>UIView</code> のオブジェクト <em>か</em> <code>accessibilityLabel</code> の値を取ります。<code>UIButton</code> と <code>UILabel</code> ではデフォルトでそれらの <code>title</code> の値が <code>accessibilityLabel</code> として使用できます。テストでほとんどのビューにアクセスできる方法についてはっきり示すために実装を見てきました。</p>
+<p>コントローラをテストするために Spec を用意し、<code>it</code> ブロックでアサーションを行います。もう一つの新しいおもちゃは <code>tap</code> です。 <code>tap</code> は最初の引数として <code>UIView</code> のオブジェクト <em>か</em> <code>accessibilityLabel</code> の値を取ります。<code>UIButton</code> と <code>UILabel</code> ではデフォルトで自分の <code>title</code> の値を <code>accessibilityLabel</code> として使用できます。今回の実装例では、テスト時、他のビューにアクセスするときの方法を示すためにデフォルトの挙動を用いませんでした。</p>
 
 <p><code>tap</code> の他にも、<code>flick</code>,  <code>drag</code>, <code>pinch_close</code>, <code>pinch_open</code>, そして <code>rotate</code> も使うことができます。それぞれについて、RubyMotion の <a href="http://rubymotion.jp/RubyMotionDocumentation/articles/testing/#_view_events">full documentation</a> で確認してみてください。</p>
 

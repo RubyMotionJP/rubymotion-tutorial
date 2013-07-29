@@ -147,17 +147,17 @@
 
 <h2 id="toc_2">NSCoding</h2>
 
-<p>それで今は、私たちはモデルにスケーラブルな基盤があり、サーバからいくつかデータを取得しています。データを取得するたびにリモート API を呼び出す代わりに、まずはじめにローカルのコピー (別名: キャッシュ) があるかをチェックしたいと思います。オブジェクトをファイルなどに保存するコードを作成できますが、より良いアイディアがあります。</p>
+<p>モデル用のスケーラブルな基盤があり、それを使ってサーバからデータを取得することができます。データを取得しようとするたび API を呼び出す代わりに、まずローカルのコピー (別名: キャッシュ) があるかをチェックしたいと思います。オブジェクトをファイルなどに保存するコードを作成することもできますが、もっと良いアイディアがあります。</p>
 
-<p>永続的な key-value ストアとして <code>NSUserDefaults</code> オブジェクトがあります。通常、オブジェクトとして <code>NSUserDefaults.standardUserDefaults</code> のインスタンスを次のように使用することができます。</p>
+<p>永続的な key-value ストアとして <code>NSUserDefaults</code> というオブジェクトがあります。通常、オブジェクトとして <code>NSUserDefaults.standardUserDefaults</code> のインスタンスを次のように使用することができます。</p>
 <div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="vi">@defaults</span> <span class="o">=</span> <span class="no">NSUserDefaults</span><span class="o">.</span><span class="n">standardUserDefaults</span>
 <span class="vi">@defaults</span><span class="o">[</span><span class="s2">&quot;one&quot;</span><span class="o">]</span> <span class="o">=</span> <span class="mi">1</span>
 
-<span class="c1"># 別の場所で、あるいは、アプリを起動し直して値を取得します</span>
+<span class="c1"># 別の場所で、あるいは、アプリを起動し直しても値を取得できます</span>
 <span class="vi">@defaults</span><span class="o">[</span><span class="s2">&quot;one&quot;</span><span class="o">]</span>
 <span class="o">=&gt;</span> <span class="mi">1</span>
 </code></pre></div>
-<p>とても良さそうでしょう？<code>NSUserDefaults</code> の値はアプリがインストールされているあいだ保存されます。値を急いで処理したい場合には、<code>NSUserDefaults.resetStandardUserDefaults</code> を実行することで全てのエントリを消去できます。</p>
+<p>とても良さそうでしょう？ <code>NSUserDefaults</code> の値はアプリがインストールされているあいだ保存されます。値を急いで処理したい場合には、<code>NSUserDefaults.resetStandardUserDefaults</code> を実行することで全てのエントリを消去できます。</p>
 
 <p>ここで注意があります。<code>NSUserDefaults</code> には古いオブジェクトを格納することはできません。プリミティブな値(string, integer, hash など)の格納や生の data/byte 列 は使用することができます。<code>User</code> オブジェクトはプリミティブではないため、data メソッドを使う必要があります。どのように動作するのでしょうか？</p>
 
@@ -172,7 +172,7 @@
   <span class="kp">attr_accessor</span> <span class="ss">:message</span>
   <span class="kp">attr_accessor</span> <span class="ss">:id</span>
 
-  <span class="c1"># NSUserDefaults からオブジェクトが読み込まれる時に呼び出されます。</span>
+  <span class="c1"># NSUserDefaults からオブジェクトがロードされる時に呼び出されます。</span>
   <span class="c1"># イニシャライザなので、`self` を返さなければなりません。</span>
   <span class="k">def</span> <span class="nf">initWithCoder</span><span class="p">(</span><span class="n">decoder</span><span class="p">)</span>
     <span class="nb">self</span><span class="o">.</span><span class="n">init</span>
@@ -258,14 +258,14 @@
   <span class="kp">attr_accessor</span> <span class="ss">:email</span>
 <span class="k">end</span>
 </code></pre></div>
-<p><code>AppDelegate</code> では、<code>User</code> の <code>id</code>、 <code>name</code> と <code>email</code> の各フィールドのラベルを作ります。そのあと、オブジェクトのこれら属性の監視を開始し、それに従って各ラベルが更新されます。簡単そうですか？さぁ、それを見ていきましょう。</p>
+<p><code>AppDelegate</code> では、<code>User</code> の <code>id</code>、 <code>name</code> と <code>email</code> の各フィールドのラベルを作ります。そのあと、オブジェクトのこれら属性の監視を開始し、それに従って各ラベルを更新します。簡単そうですか？さぁ、それを見ていきましょう。</p>
 <div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">AppDelegate</span>
   <span class="kp">include</span> <span class="ss">BW</span><span class="p">:</span><span class="ss">:KVO</span>
 
   <span class="kp">attr_accessor</span> <span class="ss">:user</span>
   <span class="o">.</span><span class="n">.</span><span class="o">.</span>
 </code></pre></div>
-<p>BubbleWrap のナイスな KVO wrapper を使用するために、メソッドを <code>include</code> する必要があります。プロパティを監視する任意のオブジェクトに対してこの操作を行う必要があります。デバッグを楽にするために、<code>#user</code> という属性も追加します。view は以下のようになります。</p>
+<p>BubbleWrap のナイスな KVO wrapper を使用するために、メソッドを <code>include</code> する必要があります。この操作は、プロパティの監視をしたい任意のオブジェクトに対して行う必要があります。デバッグを楽にするために、<code>#user</code> という属性も追加します。view は以下のようになります。</p>
 <div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby">  <span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="n">application</span><span class="p">,</span> <span class="ss">didFinishLaunchingWithOptions</span><span class="p">:</span><span class="n">launchOptions</span><span class="p">)</span>
     <span class="vi">@window</span> <span class="o">=</span> <span class="no">UIWindow</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">initWithFrame</span><span class="p">(</span><span class="no">UIScreen</span><span class="o">.</span><span class="n">mainScreen</span><span class="o">.</span><span class="n">applicationFrame</span><span class="p">)</span>
     <span class="vi">@window</span><span class="o">.</span><span class="n">makeKeyAndVisible</span>
@@ -303,7 +303,7 @@
   <span class="nb">instance_variable_get</span><span class="p">(</span><span class="s2">&quot;@name_label&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">new_value</span>
 <span class="k">end</span>
 </code></pre></div>
-<p>最高でしょう？ あと、次のことは覚えておいてください。<code>self.user</code> で起きていることを監視するようにしているので、<code>self.user</code> に再度オブジェクトを割り当てると監視動作は停止します。<code>self.user = some_other_user</code> とすると停止します。</p>
+<p>最高でしょう？ あと、次のことは覚えておいてください。監視実行時の <code>self.user</code> で起きていることのみを監視するようにしているので、<code>self.user</code> に再度オブジェクトを割り当てると監視動作は停止します。<code>self.user = some_other_user</code> とすると停止します。</p>
 
 <p>どのようにテストしたら良いでしょう？<code>rake</code> を実行してデバッグコンソールへ向かいましょう。私たちが正しく掘り下げていれば、<code>User</code> オブジェクトを取得することができ、それで遊ぶことができるはずです。</p>
 <div class="highlight"><pre><code class="text language-text" data-lang="text">$ rake

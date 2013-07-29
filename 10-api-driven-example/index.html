@@ -111,7 +111,7 @@
 
 <h2 id="toc_1">セットアップ</h2>
 
-<p><code>motion create Colr</code> でプロジェクトのセットアップをし，<code>require &#39;bubble-wrap&#39;</code> を <code>Rakefile</code> に追加します．適切な設定を行ったら，<code>./app</code> *内部*に いくつかのフォルダ - <code>./app/models/</code> 及び <code>./app/controllers</code> を作成します．</p>
+<p><code>motion create Colr</code> でプロジェクトのセットアップをし，<code>require &#39;bubble-wrap&#39;</code> を <code>Rakefile</code> に追加します．適切な設定を行ったら，<code>./app</code> の <em>配下</em> にディレクトリを作成します． <code>./app/models/</code> 及び <code>./app/controllers</code> ディレクトリです．</p>
 
 <h2 id="toc_2">モデル</h2>
 
@@ -288,7 +288,7 @@
 </code></pre></div>
 <p><code>when</code> 関数は，全ての <code>UIControl</code> サブクラス (<code>UIButton</code> もその一つです ) で利用可能であり，<code>UIControlEvent</code> のビットマスクを引数として取ります．リクエストの実行中，私たちは一時的に UI 要素を無効にします．</p>
 
-<p>あれ……<code>Color.find</code> メソッドとは何でしょうか？ええと，URL リクエストはコントローラではなくモデルの中で扱う方がおすすめです．その方が，アプリの他の部分から，サーバーにある <code>Color</code> を取得しようとした時に，コードの重複がなくなります．*……この言葉が伏線となっていたことを，このとき私たちは知る由もなかった*．</p>
+<p>あれ……<code>Color.find</code> メソッドとは何でしょうか？ええと，URL リクエストはコントローラではなくモデルの中で扱う方がおすすめです．その方が，アプリの他の部分から，サーバーにある <code>Color</code> を取得しようとした時に，コードの重複がなくなります． <em>……この言葉が伏線となっていたことを，このとき私たちは知る由もなかった</em> ．</p>
 
 <p>ともかく，<code>Color</code> クラスに静的メソッド <code>find</code> を追加しましょう :</p>
 <div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Color</span>
